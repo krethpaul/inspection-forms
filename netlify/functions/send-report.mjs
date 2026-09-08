@@ -10,6 +10,7 @@ const ALLOWED_ORIGINS = [
 ];
 
 const MAX_PDF_BYTES = 4 * 1024 * 1024; // 4 MB of base64; keeps us under Netlify's payload ceiling
+const MIN_PDF_BYTES = 400;                // anything smaller is not a real report
 
 const json = (status, obj) =>
   new Response(JSON.stringify(obj), {
@@ -33,7 +34,15 @@ export default async (req) => {
   }
 
   if (req.method !== 'POST') return json(405, { error: 'Method not allowed' });
-  if (origin && !ALLOWED_ORIGINS.includes(origin)) return json(403, { error: 'Forbidden' });
+
+  // Require the request to come from the form site. A browser cannot forge
+  // Origin, so this stops anything driven from another page; it does not stop a
+  // handcrafted request from a script.
+  const referer = req.headers.get('referer') || '';
+  const fromSite =
+    ALLOWED_ORIGINS.includes(origin) ||
+    (!origin && ALLOWED_ORIGINS.some((o) => referer.startsWith(o + '/')));
+  if (!fromSite) return json(403, { error: 'Forbidden' });
 
   const key = process.env.RESEND_API_KEY;
   if (!key) return json(500, { error: 'Mail is not configured' });
@@ -56,6 +65,12 @@ export default async (req) => {
   const pdf = typeof body.pdf === 'string' ? body.pdf : '';
   if (!pdf) return json(400, { error: 'Missing report' });
   if (pdf.length > MAX_PDF_BYTES) return json(413, { error: 'Report too large' });
+  if (pdf.length < MIN_PDF_BYTES) return json(400, { error: 'Report too small' });
+
+  // Base64 of a real PDF always begins "JVBERi0x" (%PDF-1). This refuses any
+  // other payload rather than forwarding it as an attachment.
+  if (!/^JVBERi0x/.test(pdf)) return json(400, { error: 'Not a PDF' });
+  if (!/^[A-Za-z0-9+/=\s]+$/.test(pdf)) return json(400, { error: 'Malformed report' });
 
   // Everything below is derived server-side or sanitised — nothing from the
   // request decides who the mail goes to.
