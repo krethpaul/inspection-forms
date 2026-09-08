@@ -695,7 +695,7 @@
     doc.setFont('helvetica','bold');doc.setFontSize(10.5);
     if(f.length){
       doc.setTextColor(RED[0],RED[1],RED[2]);
-      doc.text(f.length+' item'+(f.length===1?'':'s')+' need attention',M,y);
+      doc.text(f.length===1?'1 item needs attention':(f.length+' items need attention'),M,y);
     }else{
       doc.setTextColor(GREEN[0],GREEN[1],GREEN[2]);
       doc.text('All items passed',M,y);
@@ -730,24 +730,25 @@
       if(r.type==='note'){
         doc.setFont('helvetica','italic');doc.setFontSize(9.5);doc.setTextColor(MUTED[0],MUTED[1],MUTED[2]);
         var nl=doc.splitTextToSize(r.label+': '+r.value,CW-16);
-        need(nl.length*12+8);
+        need(nl.length*12+18);
         doc.text(nl,M+16,y);
-        y+=nl.length*12+8;
+        y+=(nl.length-1)*12+22;
         return;
       }
       doc.setFont('helvetica','normal');doc.setFontSize(10);
       var ll=doc.splitTextToSize(r.label,LW);
       var vtxt=r.value+(r.extra?'  ('+r.extra+')':'');
       var vl=doc.splitTextToSize(vtxt,CW-LW-16);
-      var h=Math.max(ll.length,vl.length)*13+7;
-      need(h);
+      var lines=Math.max(ll.length,vl.length);
+      need(lines*13+21);
       doc.setTextColor(INK[0],INK[1],INK[2]);
       doc.text(ll,M,y);
       if(r.bad){doc.setFont('helvetica','bold');doc.setTextColor(RED[0],RED[1],RED[2]);}
       doc.text(vl,VX,y);
-      y+=h;
+      var rule=y+(lines-1)*13+8;
       doc.setDrawColor(238,236,230);doc.setLineWidth(0.5);
-      doc.line(M,y-5,PW-M,y-5);
+      doc.line(M,rule,PW-M,rule);
+      y=rule+13;
     });
 
     // signature - closes out the report before the photo appendix
