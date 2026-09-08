@@ -1,44 +1,44 @@
-# Inspection Ready Kitchens - inspection forms
+# Inspection forms
 
-Self-hosted inspection form pages that post into Jotform without any Jotform branding,
-served at https://forms.inspectionreadykitchens.com
+Self-hosted inspection form pages that post into a form backend, plus a small
+function that emails a PDF of the finished inspection.
 
 ## Layout
 
     public/                     everything served on the site
       index.html                chooser page listing the forms
       _headers                  adds X-Robots-Tag: noindex
-      kitchen-walk/             M.K copy
-      sample-inspection/        Shorty Small's sample inspection
-      kb-kitchen-walk/          K.B copy
-      food-truck-daily/         Shorty Small's Food Truck Daily Inspection
+      <slug>/index.html         one folder per form
     netlify/functions/
-      send-report.mjs           emails the finished PDF (food truck form)
-    netlify.toml                tells Netlify what to publish and where functions live
+      send-report.mjs           emails the finished PDF
+    netlify.toml                publish directory and functions directory
 
 ## Deploying
 
-Push to `main`. Netlify builds and publishes automatically - there is no build
-step, it just copies `public/` and bundles the function.
+Push to `main`. Netlify builds and publishes automatically; there is no build
+step, it copies `public/` and bundles the function.
 
-## Environment variables (Netlify: Project configuration -> Environment variables)
+## Configuration
+
+The function reads its settings from environment variables set in the Netlify
+UI, never from this repository:
 
 | Variable | Purpose |
 | --- | --- |
-| `RESEND_API_KEY` | API key from resend.com, used to send the report email |
+| `RESEND_API_KEY` | API key for the mail provider (marked secret) |
 | `REPORT_RECIPIENTS` | Comma-separated addresses that receive the PDF |
-| `REPORT_FROM` | Optional. Defaults to `Shorty Small's Inspections <paul@hatchtable.com>` |
+| `REPORT_FROM` | Optional sender override |
 
-Changing who receives the report is an environment-variable edit, not a code change.
+Changing who receives a report is an environment-variable edit plus a redeploy,
+not a code change.
 
 ## How a form page works
 
-Each page is one self-contained HTML file. On submit it posts the answers straight to
-`submit.jotform.com`, so notifications, PDFs, the submissions table and Zapier all keep
-working. The food truck page additionally builds a PDF in the browser and posts it to
-`/.netlify/functions/send-report`, which emails it. If that email fails, the submission
-still went through - the two are independent.
+Each page is one self-contained HTML file. On submit it posts the answers to the
+form backend, then builds a PDF in the browser and posts that to
+`/.netlify/functions/send-report`, which emails it. The two paths are
+independent: if the email fails, the submission still went through.
 
-Hidden quality fields on the food truck form: `Time Spent` (seconds from first
-interaction to submit), `Photo 1 Age` and `Photo 2 Age` (minutes old each photo file was
-when attached). A Zap alerts on time under 240s or a photo older than 30 minutes.
+Operational details — form identifiers, alert thresholds, recipients, phone
+numbers — are deliberately not documented here. They live in the private
+operations runbook.
