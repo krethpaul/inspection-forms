@@ -1,13 +1,25 @@
 // Emails a finished inspection PDF. Called by the form page after a successful submission.
 // Requires two Netlify environment variables:
 //   RESEND_API_KEY     - the API key from resend.com
-//   REPORT_RECIPIENTS  - comma-separated list of addresses to send to
+//   REPORT_RECIPIENTS  - comma-separated list of addresses to send to, for every form
 // Optional:
 //   REPORT_FROM        - sender, defaults to "Shorty Small's Inspections <paul@hatchtable.com>"
+//   Per-form additional recipients - a form page can send a "formSlug" in its
+//   request body to add extra recipients on top of REPORT_RECIPIENTS, without
+//   changing who the other forms mail to. The slug must be one of the keys in
+//   FORM_RECIPIENT_ENV below (never taken from the request as a raw env var
+//   name), and its value is read from the named environment variable.
 
 const ALLOWED_ORIGINS = [
   'https://forms.inspectionreadykitchens.com'
 ];
+
+// slug (sent by the form page) -> Netlify environment variable holding that
+// form's extra, comma-separated recipients. Add an entry here (and set the
+// matching env var) to give another form its own additional recipients.
+const FORM_RECIPIENT_ENV = {
+  'restaurant-daily': 'REPORT_RECIPIENTS_RESTAURANT_DAILY'
+};
 
 const MAX_PDF_BYTES = 4 * 1024 * 1024; // 4 MB of base64; keeps us under Netlify's payload ceiling
 const MIN_PDF_BYTES = 400;                // anything smaller is not a real report
@@ -47,12 +59,6 @@ export default async (req) => {
   const key = process.env.RESEND_API_KEY;
   if (!key) return json(500, { error: 'Mail is not configured' });
 
-  const to = (process.env.REPORT_RECIPIENTS || '')
-    .split(',')
-    .map((s) => s.trim())
-    .filter(Boolean);
-  if (!to.length) return json(500, { error: 'No recipients configured' });
-
   const from = process.env.REPORT_FROM || "Shorty Small's Inspections <paul@hatchtable.com>";
 
   let body;
@@ -61,6 +67,21 @@ export default async (req) => {
   } catch {
     return json(400, { error: 'Bad request' });
   }
+
+  // The form page may send a formSlug to pick up that form's extra recipients
+  // (see FORM_RECIPIENT_ENV above). Only a recognized slug does anything -
+  // the client never supplies an address or env var name directly.
+  const formSlug = typeof body.formSlug === 'string' ? body.formSlug.slice(0, 60) : '';
+  const extraEnvKey = FORM_RECIPIENT_ENV[formSlug];
+
+  const splitAddrs = (v) => (v || '').split(',').map((s) => s.trim()).filter(Boolean);
+  const to = Array.from(
+    new Set([
+      ...splitAddrs(process.env.REPORT_RECIPIENTS),
+      ...(extraEnvKey ? splitAddrs(process.env[extraEnvKey]) : [])
+    ])
+  );
+  if (!to.length) return json(500, { error: 'No recipients configured' });
 
   const pdf = typeof body.pdf === 'string' ? body.pdf : '';
   if (!pdf) return json(400, { error: 'Missing report' });
