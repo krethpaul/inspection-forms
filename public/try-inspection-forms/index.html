@@ -112,18 +112,9 @@
     </div>
   </div>
 
-  <div class="irk-row">
-    <div class="irk-f full" data-req data-kind="checkgroup">
-      <label class="irk-lbl">Which forms do you want to try?<span class="irk-req">*</span></label>
-      <div class="irk-checks">
-        <label class="irk-chk"><input type="checkbox" name="q7_q7_checkbox5[]" value="Kitchen Line Walk"> Kitchen Line Walk</label>
-        <label class="irk-chk"><input type="checkbox" name="q7_q7_checkbox5[]" value="Sample Health Inspection"> Sample Health Inspection</label>
-        <label class="irk-chk"><input type="checkbox" name="q7_q7_checkbox5[]" value="Food Truck Daily Check"> Food Truck Daily Check</label>
-        <label class="irk-chk"><input type="checkbox" name="q7_q7_checkbox5[]" value="Not sure — show me everything"> Not sure — show me everything</label>
-      </div>
-      <div class="irk-err">Please choose at least one.</div>
-    </div>
-  </div>
+  <!-- "Which forms do you want to try?" is no longer shown to the filler — this page is
+       Kitchen Line Walk's dedicated demo-request form, so that answer is sent automatically. -->
+  <input type="hidden" name="q7_q7_checkbox5[]" value="Kitchen Line Walk">
 
   <div class="irk-row">
     <div class="irk-f full" data-req data-kind="select">
