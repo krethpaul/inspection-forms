@@ -38,6 +38,7 @@
   .irk-radios{display:flex;gap:22px;flex-wrap:wrap}
   .irk-note{display:none}
   .irk-note.on{display:block}
+  .irk-hidden{display:none}
   .irk-note .irk-in{border-color:#e0a800;background:#fffbea}
   .irk-ro{background:#f3f3f3;color:#555;cursor:default;max-width:320px}
   .irk-photo{position:relative}
@@ -160,7 +161,7 @@
   </div>
 
   <div class="irk-row">
-    <div class="irk-f full" data-req data-kind="radio">
+    <div class="irk-f full" data-req data-kind="radio" data-na-temp="q1292_temp">
       <label class="irk-lbl">Tartar Sauce is labeled and not out of date<span class="irk-req">*</span></label>
       <div class="irk-radios">
         <label class="irk-chk"><input type="radio" name="q1352_tartarSauce[]" value="Yes" data-nofail data-note="n1353"> Yes</label>
@@ -230,7 +231,7 @@
   </div>
 
   <div class="irk-row">
-    <div class="irk-f full" data-req data-kind="radio">
+    <div class="irk-f full" data-req data-kind="radio" data-na-temp="q1317_extraPrep1317">
       <label class="irk-lbl">Burgers are labeled and not out of date<span class="irk-req">*</span></label>
       <div class="irk-radios">
         <label class="irk-chk"><input type="radio" name="q1354_burgersAre[]" value="Yes" data-nofail data-note="n1355"> Yes</label>
@@ -259,7 +260,7 @@
   </div>
 
   <div class="irk-row">
-    <div class="irk-f full" data-req data-kind="radio">
+    <div class="irk-f full" data-req data-kind="radio" data-na-temp="q1358_catfishTemperature">
       <label class="irk-lbl">Catfish labeled and not out of date<span class="irk-req">*</span></label>
       <div class="irk-radios">
         <label class="irk-chk"><input type="radio" name="q1356_catfishLabeled[]" value="Yes" data-nofail data-note="n1357"> Yes</label>
@@ -288,7 +289,7 @@
   </div>
 
   <div class="irk-row">
-    <div class="irk-f full" data-req data-kind="radio">
+    <div class="irk-f full" data-req data-kind="radio" data-na-temp="q1364_mozzCheese1364">
       <label class="irk-lbl">Mozz Cheese Sticks labeled and not out of date<span class="irk-req">*</span></label>
       <div class="irk-radios">
         <label class="irk-chk"><input type="radio" name="q1362_mozzCheese[]" value="Yes" data-nofail data-note="n1363"> Yes</label>
@@ -317,7 +318,7 @@
   </div>
 
   <div class="irk-row">
-    <div class="irk-f full" data-req data-kind="radio">
+    <div class="irk-f full" data-req data-kind="radio" data-na-temp="q1368_chickenBreasts1368">
       <label class="irk-lbl">Chicken Breasts labeled and not out of date<span class="irk-req">*</span></label>
       <div class="irk-radios">
         <label class="irk-chk"><input type="radio" name="q1366_chickenBreasts[]" value="Yes" data-nofail data-note="n1367"> Yes</label>
@@ -499,6 +500,17 @@
   form.querySelectorAll('input[type=radio][data-note]').forEach(function(r){
     r.addEventListener('change',function(){
       showNote(r.getAttribute('data-note'), r.checked && r.value==='No');
+      var grp=r.closest('.irk-f[data-na-temp]');
+      if(grp){
+        var tempInput=form.querySelector('input[name="'+grp.getAttribute('data-na-temp')+'"]');
+        if(tempInput){
+          var row=tempInput.closest('.irk-row'), wrap=tempInput.closest('.irk-f');
+          var isNA=r.checked && r.value==='N/A (Out of Stock)';
+          if(row) row.classList.toggle('irk-hidden',isNA);
+          if(wrap){ if(isNA) wrap.removeAttribute('data-req'); else wrap.setAttribute('data-req',''); }
+          if(isNA){ tempInput.value=''; showNote(tempInput.getAttribute('data-note'),false); }
+        }
+      }
     });
   });
 
@@ -613,6 +625,8 @@
         if(sections>1) out.push({type:'section',label:n.textContent.trim()});
         return;
       }
+      var parentRow=n.closest('.irk-row');
+      if(parentRow&&parentRow.classList.contains('irk-hidden')) return;
       var lbl=n.querySelector('.irk-lbl');
       if(!lbl) return;
       var label=lbl.textContent.replace(/\*$/,'').trim();
