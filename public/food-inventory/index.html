@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Food Inventory | Shorty Small's</title>
+<link rel="icon" href="data:,">
+<style>html,body{margin:0;padding:0;background:#f7f2f2}</style>
+</head>
+<body>
+<div class="irk-wrap">
+<style>
+  .irk-wrap{--irk-ink:#1f1f1f;--irk-muted:#6f6f6f;--irk-line:#b8b8b8;--irk-accent:#18bd5b;--irk-accent-dk:#12a04c;--irk-bg:#f7f2f2;--irk-card:#fff;--irk-err:#d0342c;
+    font-family:Arimo,"Helvetica Neue",Arial,sans-serif;color:var(--irk-ink);background:var(--irk-bg);padding:24px 12px 48px;box-sizing:border-box;line-height:1.4}
+  .irk-wrap *{box-sizing:border-box}
+  .irk-logo{width:520px;max-width:100%;display:block;margin:0 auto 20px;background:#fff;padding:12px;border-radius:6px}
+  .irk-card{background:var(--irk-card);max-width:752px;margin:0 auto;border-radius:8px;padding:28px 36px 36px}
+  @media(max-width:600px){.irk-card{padding:20px 18px 28px}}
+  .irk-h{font-size:20.8px;font-weight:600;text-align:center;margin:26px 0 20px}
+  .irk-h:first-child{margin-top:8px}
+  .irk-hr{border:0;border-top:1px solid #948c75;margin:22px 0}
+  .irk-hr.light{border-top-color:#e6e6e6}
+  .irk-row{display:flex;flex-wrap:wrap;gap:8px 32px;margin:0 0 22px}
+  .irk-f{flex:1 1 220px;min-width:0}
+  .irk-f.full{flex-basis:100%}
+  .irk-f.narrow{flex:0 0 160px}
+  .irk-lbl{display:block;font-size:16px;font-weight:700;margin-bottom:8px}
+  .irk-req{color:var(--irk-err);margin-left:3px}
+  .irk-sub{display:block;font-size:12px;color:var(--irk-muted);margin-top:6px}
+  .irk-in{width:100%;height:46px;border:1px solid var(--irk-line);border-radius:6px;padding:0 12px;font:inherit;font-size:16px;color:var(--irk-ink);background:#fff}
+  .irk-in:focus{outline:none;border-color:#7a7a7a;box-shadow:0 0 0 3px rgba(24,189,91,.18)}
+  .irk-in.num{width:100%;min-width:88px}
+  .irk-inline{display:flex;gap:10px}
+  .irk-inline .irk-f{flex:1 1 0}
+  .irk-ro{background:#f3f3f3;color:#555;cursor:default;max-width:320px}
+  .irk-submit{display:block;margin:26px auto 0;background:var(--irk-accent);color:#fff;border:0;border-radius:4px;font:inherit;font-size:16px;font-weight:600;padding:0 44px;height:46px;cursor:pointer;min-width:180px}
+  .irk-submit:hover{background:var(--irk-accent-dk)}
+  .irk-submit[disabled]{opacity:.6;cursor:wait}
+  .irk-err{color:var(--irk-err);font-size:13px;margin-top:6px;display:none}
+  .irk-f.bad .irk-in{border-color:var(--irk-err)}
+  .irk-f.bad .irk-err{display:block}
+  .irk-banner{display:none;background:#fdecea;color:#8a1f16;border:1px solid #f5c2bd;border-radius:6px;padding:12px 16px;margin:18px 0 0;font-size:14px;text-align:center}
+  .irk-thanks{display:none;text-align:center;padding:40px 10px}
+  .irk-thanks .ck{width:64px;height:64px;border-radius:50%;background:var(--irk-accent);color:#fff;font-size:36px;line-height:64px;margin:0 auto 18px}
+  .irk-thanks h3{font-size:22px;margin:0 0 8px}
+  .irk-thanks p{color:var(--irk-muted);margin:0 0 22px}
+  .irk-grid-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table.irk-grid{width:100%;border-collapse:collapse;font-size:14px;min-width:420px}
+  table.irk-grid th,table.irk-grid td{border:1px solid var(--irk-line);padding:6px 8px;text-align:left}
+  table.irk-grid th{background:#f2efe9;font-weight:700;font-size:12.5px;text-transform:uppercase;letter-spacing:.3px;color:var(--irk-muted)}
+  table.irk-grid td:first-child{white-space:nowrap}
+  table.irk-grid td:not(:first-child){width:110px}
+  table.irk-grid tr.bad td{background:#fdecea}
+</style>
+
+<img class="irk-logo" src="https://shortysmalls.com/wp-content/uploads/2026/09/shorty-smalls-logo-color.png" alt="Shorty Small's">
+<div class="irk-card">
+<form id="irkForm" action="https://submit.jotform.com/submit/241744994766171" method="post" enctype="multipart/form-data" target="irkSink" novalidate>
+  <input type="hidden" name="formID" value="241744994766171">
+  <input type="hidden" name="simple_spc" value="241744994766171-241744994766171">
+  <input type="hidden" name="website" value="">
+
+  <h2 class="irk-h">Food Inventory</h2>
+
+  <div class="irk-row">
+    <div class="irk-f">
+      <label class="irk-lbl">Date</label>
+      <input class="irk-in irk-ro" type="text" id="irkDateShow" readonly tabindex="-1" value="">
+      <span class="irk-sub">Recorded automatically at the moment you submit</span>
+      <input type="hidden" name="q3_date[month]" id="irk-m">
+      <input type="hidden" name="q3_date[day]" id="irk-d">
+      <input type="hidden" name="q3_date[year]" id="irk-y">
+    </div>
+    <div class="irk-f">
+      <label class="irk-lbl">Inspected by</label>
+      <div class="irk-inline">
+        <div class="irk-f"><input class="irk-in" type="text" name="q4_inspectedBy[first]" autocomplete="given-name"><span class="irk-sub">First Name</span></div>
+        <div class="irk-f"><input class="irk-in" type="text" name="q4_inspectedBy[last]" autocomplete="family-name"><span class="irk-sub">Last Name</span></div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="irk-hr">
+  <div class="irk-row">
+    <div class="irk-f full" data-kind="grid" data-req>
+      <label class="irk-lbl">Grill<span class="irk-req">*</span></label>
+      <div class="irk-grid-wrap">
+      <table class="irk-grid">
+        <thead><tr><th>Item</th><th>On Hand</th><th>Est. Needed</th></tr></thead>
+        <tbody>
+          <tr data-item="Patties (8 oz)"><td>Patties (8 oz)</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q12_meat12[0][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q12_meat12[0][]"></td></tr>
+          <tr data-item="Chicken Breasts"><td>Chicken Breasts</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q12_meat12[1][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q12_meat12[1][]"></td></tr>
+          <tr data-item="Bacon"><td>Bacon</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q12_meat12[2][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q12_meat12[2][]"></td></tr>
+          <tr data-item="Pastrami"><td>Pastrami</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q12_meat12[3][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q12_meat12[3][]"></td></tr>
+          <tr data-item="Sliced Am Cheese"><td>Sliced Am Cheese</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q12_meat12[4][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q12_meat12[4][]"></td></tr>
+          <tr data-item="Cheddar Cheese"><td>Cheddar Cheese</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q12_meat12[5][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q12_meat12[5][]"></td></tr>
+          <tr data-item="Onion Rings"><td>Onion Rings</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q12_meat12[6][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q12_meat12[6][]"></td></tr>
+          <tr data-item="Butter (Per Pound)"><td>Butter (Per Pound)</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q12_meat12[7][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q12_meat12[7][]"></td></tr>
+          <tr data-item="Buns (Per Bag)"><td>Buns (Per Bag)</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q12_meat12[8][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q12_meat12[8][]"></td></tr>
+          <tr data-item="Tomatoes"><td>Tomatoes</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q12_meat12[9][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q12_meat12[9][]"></td></tr>
+          <tr data-item="Onions"><td>Onions</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q12_meat12[10][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q12_meat12[10][]"></td></tr>
+          <tr data-item="Pickles"><td>Pickles</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q12_meat12[11][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q12_meat12[11][]"></td></tr>
+          <tr data-item="Chips (Lays)"><td>Chips (Lays)</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q12_meat12[12][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q12_meat12[12][]"></td></tr>
+          <tr data-item="Garlic Salt"><td>Garlic Salt</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q12_meat12[13][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q12_meat12[13][]"></td></tr>
+          <tr data-item="Black Pepper"><td>Black Pepper</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q12_meat12[14][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q12_meat12[14][]"></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="irk-err">Please fill in at least one item in this section.</div>
+    </div>
+  </div>
+
+  <hr class="irk-hr light">
+  <div class="irk-row">
+    <div class="irk-f full" data-kind="grid" data-req>
+      <label class="irk-lbl">Fry<span class="irk-req">*</span></label>
+      <div class="irk-grid-wrap">
+      <table class="irk-grid">
+        <thead><tr><th>Item</th><th>On Hand</th><th>Est. Needed</th></tr></thead>
+        <tbody>
+          <tr data-item="Catfish Filets (Bag/6-Orders)"><td>Catfish Filets (Bag/6-Orders)</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q13_fry[0][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q13_fry[0][]"></td></tr>
+          <tr data-item="Corn Dogs"><td>Corn Dogs</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q13_fry[1][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q13_fry[1][]"></td></tr>
+          <tr data-item="French Fries ( BAG)"><td>French Fries ( BAG)</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q13_fry[2][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q13_fry[2][]"></td></tr>
+          <tr data-item="Wings"><td>Wings</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q13_fry[3][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q13_fry[3][]"></td></tr>
+          <tr data-item="MOZZ Sticks (BAG)"><td>MOZZ Sticks (BAG)</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q13_fry[4][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q13_fry[4][]"></td></tr>
+          <tr data-item="Tartar Sauce"><td>Tartar Sauce</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q13_fry[5][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q13_fry[5][]"></td></tr>
+          <tr data-item="Cornmeal (24# Bag)"><td>Cornmeal (24# Bag)</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q13_fry[6][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q13_fry[6][]"></td></tr>
+          <tr data-item="Lemons (Each)"><td>Lemons (Each)</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q13_fry[7][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q13_fry[7][]"></td></tr>
+          <tr data-item="Marinara (CAN)"><td>Marinara (CAN)</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q13_fry[8][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q13_fry[8][]"></td></tr>
+          <tr data-item="Ranch (Bottle)"><td>Ranch (Bottle)</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q13_fry[9][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q13_fry[9][]"></td></tr>
+          <tr data-item="Fryer Oil (Container)"><td>Fryer Oil (Container)</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q13_fry[10][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q13_fry[10][]"></td></tr>
+          <tr data-item="Fry Filter Papaer (Each)"><td>Fry Filter Papaer (Each)</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q13_fry[11][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q13_fry[11][]"></td></tr>
+          <tr data-item="Filter Powder (Bag)"><td>Filter Powder (Bag)</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q13_fry[12][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q13_fry[12][]"></td></tr>
+          <tr data-item="Fryer Boil Out Pucks (Each)"><td>Fryer Boil Out Pucks (Each)</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q13_fry[13][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q13_fry[13][]"></td></tr>
+          <tr data-item="Lighter (Stick Kind)"><td>Lighter (Stick Kind)</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q13_fry[14][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q13_fry[14][]"></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="irk-err">Please fill in at least one item in this section.</div>
+    </div>
+  </div>
+
+  <hr class="irk-hr light">
+  <div class="irk-row">
+    <div class="irk-f full" data-kind="grid" data-req>
+      <label class="irk-lbl">Condiments<span class="irk-req">*</span></label>
+      <div class="irk-grid-wrap">
+      <table class="irk-grid">
+        <thead><tr><th>Item</th><th>On Hand</th><th>Est. Needed</th></tr></thead>
+        <tbody>
+          <tr data-item="Ketchup Pakets"><td>Ketchup Pakets</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q9_condiments[0][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q9_condiments[0][]"></td></tr>
+          <tr data-item="Musterd Packets"><td>Musterd Packets</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q9_condiments[1][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q9_condiments[1][]"></td></tr>
+          <tr data-item="May Packets"><td>May Packets</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q9_condiments[2][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q9_condiments[2][]"></td></tr>
+          <tr data-item="Hot Sauce"><td>Hot Sauce</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q9_condiments[3][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q9_condiments[3][]"></td></tr>
+          <tr data-item="BBQ Sauce"><td>BBQ Sauce</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q9_condiments[4][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q9_condiments[4][]"></td></tr>
+          <tr data-item="Hot Honey"><td>Hot Honey</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q9_condiments[5][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q9_condiments[5][]"></td></tr>
+          <tr data-item="Misc"><td>Misc</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q9_condiments[6][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q9_condiments[6][]"></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="irk-err">Please fill in at least one item in this section.</div>
+    </div>
+  </div>
+
+  <hr class="irk-hr light">
+  <div class="irk-row">
+    <div class="irk-f full" data-kind="grid" data-req>
+      <label class="irk-lbl">Beverages<span class="irk-req">*</span></label>
+      <div class="irk-grid-wrap">
+      <table class="irk-grid">
+        <thead><tr><th>Item</th><th>On Hand</th><th>Est. Needed</th></tr></thead>
+        <tbody>
+          <tr data-item="Coke (6-pack)"><td>Coke (6-pack)</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q17_beverages[0][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q17_beverages[0][]"></td></tr>
+          <tr data-item="Diet Coke (6-pack)"><td>Diet Coke (6-pack)</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q17_beverages[1][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q17_beverages[1][]"></td></tr>
+          <tr data-item="Sprite (6-pack)"><td>Sprite (6-pack)</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q17_beverages[2][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q17_beverages[2][]"></td></tr>
+          <tr data-item="Dr Pepper (6-pack)"><td>Dr Pepper (6-pack)</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q17_beverages[3][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q17_beverages[3][]"></td></tr>
+          <tr data-item="Bottled Water (6-pack)"><td>Bottled Water (6-pack)</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q17_beverages[4][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q17_beverages[4][]"></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="irk-err">Please fill in at least one item in this section.</div>
+    </div>
+  </div>
+
+  <hr class="irk-hr light">
+  <div class="irk-row">
+    <div class="irk-f full" data-kind="grid" data-req>
+      <label class="irk-lbl">Paper &amp; Plastic Supples<span class="irk-req">*</span></label>
+      <div class="irk-grid-wrap">
+      <table class="irk-grid">
+        <thead><tr><th>Item</th><th>On Hand</th><th>Est. Needed</th></tr></thead>
+        <tbody>
+          <tr data-item="3 oz Ramikens"><td>3 oz Ramikens</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[0][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[0][]"></td></tr>
+          <tr data-item="Lids 3 oz"><td>Lids 3 oz</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[1][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[1][]"></td></tr>
+          <tr data-item="2 oz Ramikens"><td>2 oz Ramikens</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[2][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[2][]"></td></tr>
+          <tr data-item="Lids 2 oz"><td>Lids 2 oz</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[3][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[3][]"></td></tr>
+          <tr data-item="3 lb Food Tray"><td>3 lb Food Tray</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[4][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[4][]"></td></tr>
+          <tr data-item="5 lb Food Tray"><td>5 lb Food Tray</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[5][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[5][]"></td></tr>
+          <tr data-item="Basket Liners (Check)"><td>Basket Liners (Check)</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[6][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[6][]"></td></tr>
+          <tr data-item="Wax Paper (White)"><td>Wax Paper (White)</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[7][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[7][]"></td></tr>
+          <tr data-item="Sporks (Spoon &amp; Fork)"><td>Sporks (Spoon &amp; Fork)</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[8][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[8][]"></td></tr>
+          <tr data-item="Knives (Plastic)"><td>Knives (Plastic)</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[9][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[9][]"></td></tr>
+          <tr data-item="To-Go Boxes (Large)"><td>To-Go Boxes (Large)</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[10][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[10][]"></td></tr>
+          <tr data-item="To-Go Boxes (Small)"><td>To-Go Boxes (Small)</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[11][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[11][]"></td></tr>
+          <tr data-item="To Go Bags"><td>To Go Bags</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[12][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[12][]"></td></tr>
+          <tr data-item="Plastic Wrap"><td>Plastic Wrap</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[13][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[13][]"></td></tr>
+          <tr data-item="Napkins (Paper)"><td>Napkins (Paper)</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[14][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[14][]"></td></tr>
+          <tr data-item="Paper Towels"><td>Paper Towels</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[15][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[15][]"></td></tr>
+          <tr data-item="Gloves (Vinyl)"><td>Gloves (Vinyl)</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[16][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[16][]"></td></tr>
+          <tr data-item="Trash Can Liners"><td>Trash Can Liners</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[17][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[17][]"></td></tr>
+          <tr data-item="Receipt Paper"><td>Receipt Paper</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[18][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[18][]"></td></tr>
+          <tr data-item="Sav-A-Days"><td>Sav-A-Days</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[19][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q11_paperamp[19][]"></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="irk-err">Please fill in at least one item in this section.</div>
+    </div>
+  </div>
+
+  <hr class="irk-hr light">
+  <div class="irk-row">
+    <div class="irk-f full" data-kind="grid" data-req>
+      <label class="irk-lbl">Cleaning Supplies<span class="irk-req">*</span></label>
+      <div class="irk-grid-wrap">
+      <table class="irk-grid">
+        <thead><tr><th>Item</th><th>On Hand</th><th>Est. Needed</th></tr></thead>
+        <tbody>
+          <tr data-item="Purell Santitary Spray"><td>Purell Santitary Spray</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q10_cleaningSupplies[0][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q10_cleaningSupplies[0][]"></td></tr>
+          <tr data-item="Glass Cleaner"><td>Glass Cleaner</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q10_cleaningSupplies[1][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q10_cleaningSupplies[1][]"></td></tr>
+          <tr data-item="Dish Soap"><td>Dish Soap</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q10_cleaningSupplies[2][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q10_cleaningSupplies[2][]"></td></tr>
+          <tr data-item="Grey Water Treatment"><td>Grey Water Treatment</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q10_cleaningSupplies[3][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q10_cleaningSupplies[3][]"></td></tr>
+          <tr data-item="Degreaser"><td>Degreaser</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q10_cleaningSupplies[4][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q10_cleaningSupplies[4][]"></td></tr>
+          <tr data-item="Oven Cleaner"><td>Oven Cleaner</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q10_cleaningSupplies[5][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q10_cleaningSupplies[5][]"></td></tr>
+          <tr data-item="Grill Bricks"><td>Grill Bricks</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q10_cleaningSupplies[6][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q10_cleaningSupplies[6][]"></td></tr>
+          <tr data-item="FLY (Bait)"><td>FLY (Bait)</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q10_cleaningSupplies[7][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q10_cleaningSupplies[7][]"></td></tr>
+          <tr data-item="Fly (Spray)"><td>Fly (Spray)</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q10_cleaningSupplies[8][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q10_cleaningSupplies[8][]"></td></tr>
+          <tr data-item="Sanitation Tablets"><td>Sanitation Tablets</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q10_cleaningSupplies[9][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q10_cleaningSupplies[9][]"></td></tr>
+          <tr data-item="Sanitation Strips"><td>Sanitation Strips</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q10_cleaningSupplies[10][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q10_cleaningSupplies[10][]"></td></tr>
+          <tr data-item="Sponges"><td>Sponges</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q10_cleaningSupplies[11][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q10_cleaningSupplies[11][]"></td></tr>
+          <tr data-item="Steel Wool"><td>Steel Wool</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q10_cleaningSupplies[12][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q10_cleaningSupplies[12][]"></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="irk-err">Please fill in at least one item in this section.</div>
+    </div>
+  </div>
+
+  <hr class="irk-hr light">
+  <div class="irk-row">
+    <div class="irk-f full" data-kind="grid">
+      <label class="irk-lbl">Misc.</label>
+      <div class="irk-grid-wrap">
+      <table class="irk-grid">
+        <thead><tr><th>Item</th><th>On Hand</th><th>Est. Needed</th></tr></thead>
+        <tbody>
+          <tr data-item="Item 1"><td>Item 1</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q21_misc[0][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q21_misc[0][]"></td></tr>
+          <tr data-item="Item 2"><td>Item 2</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q21_misc[1][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q21_misc[1][]"></td></tr>
+          <tr data-item="Item 3"><td>Item 3</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q21_misc[2][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q21_misc[2][]"></td></tr>
+          <tr data-item="Item 4"><td>Item 4</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q21_misc[3][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q21_misc[3][]"></td></tr>
+          <tr data-item="Item 5"><td>Item 5</td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q21_misc[4][]"></td><td><input class="irk-in num" type="text" inputmode="decimal" autocomplete="off" name="q21_misc[4][]"></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="irk-err">Please fill in at least one item in this section.</div>
+    </div>
+  </div>
+
+  <div class="irk-banner" id="irkBanner">Please fill in the highlighted fields before submitting.</div>
+  <button type="submit" class="irk-submit" id="irkSubmit">Submit</button>
+</form>
+
+<div class="irk-thanks" id="irkThanks">
+  <div class="ck">&#10003;</div>
+  <h3>Thank you!</h3>
+  <p>Your inventory has been submitted.</p>
+  <button type="button" class="irk-submit" style="margin:0 auto" onclick="location.reload()">Submit another</button>
+</div>
+</div>
+
+<iframe name="irkSink" id="irkSink" style="display:none;width:0;height:0;border:0" title="submission"></iframe>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/4.2.1/jspdf.umd.min.js"></script>
+<script>
+(function(){
+  var form=document.getElementById('irkForm');
+
+  /* ---- Date: read-only, stamped at the moment of submission ---- */
+  var pad=function(n){return (n<10?'0':'')+n;};
+  function stampNow(){
+    var now=new Date();
+    document.getElementById('irk-m').value=pad(now.getMonth()+1);
+    document.getElementById('irk-d').value=pad(now.getDate());
+    document.getElementById('irk-y').value=now.getFullYear();
+    document.getElementById('irkDateShow').value=pad(now.getMonth()+1)+'/'+pad(now.getDate())+'/'+now.getFullYear();
+  }
+  stampNow(); setInterval(stampNow,15000);
+
+  /* ---- Validation + submit ---- */
+  function validate(){
+    var ok=true,first=null;
+    form.querySelectorAll('.irk-f[data-req]').forEach(function(f){
+      var kind=f.getAttribute('data-kind'),good;
+      if(kind==='grid'){
+        // JotForm matrix "required" = requireOneAnswer: at least one cell filled, not every cell.
+        good=Array.prototype.some.call(f.querySelectorAll('input.irk-in'),function(i){return i.value.trim()!=='';});
+      }else{
+        good=Array.prototype.every.call(f.querySelectorAll('input.irk-in'),function(i){return i.value.trim()!=='';});
+      }
+      f.classList.toggle('bad',!good);
+      if(!good){ok=false;first=first||f;}
+    });
+    document.getElementById('irkBanner').style.display=ok?'none':'block';
+    if(first)first.scrollIntoView({behavior:'smooth',block:'center'});
+    return ok;
+  }
+  form.addEventListener('input',function(e){
+    var f=e.target.closest('.irk-f[data-req]');if(f)f.classList.remove('bad');
+    var tr=e.target.closest('tr[data-item]');if(tr)tr.classList.remove('bad');
+  });
+
+  /* ---- Build the report PDF in the browser and email it ---- */
+  var IRK_FORM_NAME = "Shorty Small's Food Inventory";
+
+  function irkCollect(){
+    var out=[],inspector='',sections=0;
+    var nodes=form.querySelectorAll('h2.irk-h, .irk-row > .irk-f');
+    Array.prototype.forEach.call(nodes,function(n){
+      if(n.tagName==='H2'){
+        sections++;
+        if(sections>1) out.push({type:'section',label:n.textContent.trim()});
+        return;
+      }
+      var lbl=n.querySelector('.irk-lbl');
+      if(!lbl) return;
+      var label=lbl.textContent.replace(/\*$/,'').trim();
+      var kind=n.getAttribute('data-kind')||'';
+
+      if(n.querySelector('#irkDateShow')) return;
+
+      if(n.querySelector('.irk-inline')){
+        var ins=n.querySelectorAll('.irk-inline input');
+        inspector=[ins[0]&&ins[0].value,ins[1]&&ins[1].value].filter(Boolean).join(' ').trim();
+        out.push({type:'row',label:label,value:inspector||'--'});
+        return;
+      }
+      if(kind==='grid'){
+        out.push({type:'section',label:label});
+        n.querySelectorAll('tr[data-item]').forEach(function(tr){
+          var item=tr.getAttribute('data-item');
+          var ins=tr.querySelectorAll('input.irk-in');
+          var onHand=(ins[0]&&ins[0].value.trim())||'--';
+          var needed=(ins[1]&&ins[1].value.trim())||'--';
+          out.push({type:'row',label:item,value:'On hand '+onHand+'  ·  Needed '+needed});
+        });
+        return;
+      }
+      var inp=n.querySelector('input.irk-in');
+      if(!inp) return;
+      out.push({type:'row',label:label,value:inp.value||'--'});
+    });
+    return {rows:out,flags:[],inspector:inspector};
+  }
+
+  function irkBuildPdf(data){
+    var J=(window.jspdf&&window.jspdf.jsPDF)||window.jsPDF;
+    if(!J) return null;
+    var doc=new J({unit:'pt',format:'letter',compress:true});
+    var PW=612,PH=792,M=48,CW=PW-M*2,y=0;
+    var when=document.getElementById('irkDateShow').value||'';
+    var INK=[30,36,32],MUTED=[110,118,112],LINE=[214,210,200];
+
+    function foot(){
+      var n=doc.internal.getNumberOfPages();
+      for(var i=1;i<=n;i++){
+        doc.setPage(i);
+        doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(MUTED[0],MUTED[1],MUTED[2]);
+        doc.text(IRK_FORM_NAME,M,PH-30);
+        doc.text('Page '+i+' of '+n,PW-M,PH-30,{align:'right'});
+      }
+    }
+    function need(h){ if(y+h>PH-56){doc.addPage();y=M;} }
+
+    y=M;
+    doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(MUTED[0],MUTED[1],MUTED[2]);
+    doc.text("SHORTY SMALL'S",M,y);
+    y+=20;
+    doc.setFontSize(19);doc.setTextColor(INK[0],INK[1],INK[2]);
+    doc.text('Food Inventory',M,y);
+    y+=18;
+    doc.setFont('helvetica','normal');doc.setFontSize(10.5);doc.setTextColor(MUTED[0],MUTED[1],MUTED[2]);
+    doc.text('Inspected by: '+(data.inspector||'--')+'    '+when,M,y);
+    y+=16;
+    doc.setDrawColor(LINE[0],LINE[1],LINE[2]);doc.setLineWidth(1);
+    doc.line(M,y,PW-M,y);
+    y+=22;
+
+    var VX=PW-M-100;
+    data.rows.forEach(function(r){
+      if(r.type==='section'){
+        need(30);
+        y+=8;
+        doc.setFont('helvetica','bold');doc.setFontSize(12.5);doc.setTextColor(INK[0],INK[1],INK[2]);
+        doc.text(r.label,M,y);
+        y+=6;
+        doc.setDrawColor(LINE[0],LINE[1],LINE[2]);doc.setLineWidth(0.75);
+        doc.line(M,y,PW-M,y);
+        y+=16;
+        return;
+      }
+      need(16);
+      doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(INK[0],INK[1],INK[2]);
+      var ll=doc.splitTextToSize(r.label,VX-M-10);
+      doc.text(ll,M,y);
+      doc.setTextColor(MUTED[0],MUTED[1],MUTED[2]);
+      var vl=doc.splitTextToSize(r.value,PW-M-VX);
+      doc.text(vl,VX,y);
+      y+=Math.max(ll.length,vl.length)*13+3;
+    });
+
+    foot();
+    try{ return doc.output('datauristring').split(',')[1]; }catch(e){ return null; }
+  }
+
+  function irkEmailReport(){
+    try{
+      var data=irkCollect();
+      var b64=irkBuildPdf(data);
+      if(!b64) return;
+      var when=document.getElementById('irkDateShow').value||'';
+      var stamp=when.replace(/[^0-9]/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'');
+      fetch('/.netlify/functions/send-report',{
+        method:'POST',
+        headers:{'content-type':'application/json'},
+        body:JSON.stringify({
+          pdf:b64,
+          formName:IRK_FORM_NAME,
+          inspector:data.inspector,
+          when:when,
+          flags:[],
+          filename:'food-inventory-'+stamp,
+          formSlug:'food-inventory'
+        })
+      }).catch(function(){});
+    }catch(e){}
+  }
+
+  var banner=document.getElementById('irkBanner');
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    if(!validate())return;
+    stampNow();
+    var btn=document.getElementById('irkSubmit');btn.disabled=true;btn.textContent='Submitting...';
+    banner.style.display='none';
+    fetch(form.action,{method:'POST',body:new FormData(form)})
+      .then(function(r){
+        if(r.status===200){irkEmailReport();form.style.display='none';document.getElementById('irkThanks').style.display='block';window.scrollTo({top:0,behavior:'smooth'});}
+        else{fail('The submission could not be sent (error '+r.status+'). Please check every field and try again.');}
+      })
+      .catch(function(){
+        form.target='irkSink';HTMLFormElement.prototype.submit.call(form);
+        irkEmailReport();
+        setTimeout(function(){form.style.display='none';document.getElementById('irkThanks').style.display='block';},2500);
+      });
+    function fail(msg){banner.textContent=msg;banner.style.display='block';btn.disabled=false;btn.textContent='Submit';}
+  });
+})();
+</script>
+</body>
+</html>
