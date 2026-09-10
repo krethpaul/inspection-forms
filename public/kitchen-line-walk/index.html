@@ -427,6 +427,7 @@
       <input type="hidden" name="q1394_typeA" id="irkDur">
       <input type="hidden" name="q1396_typeA1396" id="irkP1Age">
       <input type="hidden" name="q1397_typeA1397" id="irkP2Age">
+      <input type="hidden" name="q1404_alertPhone" id="irkAlertPhone">
       <div class="irk-sig-tools"><button type="button" class="irk-clear" id="irkSigClear">Clear</button><span class="irk-sub" style="margin:0">Sign above with your finger or mouse</span></div>
       <div class="irk-err">Please sign the form.</div>
     </div>
@@ -482,6 +483,12 @@
     document.getElementById('irkDateShow').value=pad(now.getMonth()+1)+'/'+pad(now.getDate())+'/'+now.getFullYear()+'  '+((hr%12)||12)+':'+pad(now.getMinutes())+' '+(hr>=12?'PM':'AM');
   }
   stampNow(); setInterval(stampNow,15000);
+
+  /* ---- Demo alert phone: silently captured from a ?phone= link param ---- */
+  try{
+    var irkPhoneParam=new URLSearchParams(window.location.search).get('phone');
+    if(irkPhoneParam){ document.getElementById('irkAlertPhone').value=irkPhoneParam; }
+  }catch(e){}
 
   /* ---- Quality metrics: elapsed time and photo freshness ---- */
   var irkT0=null;
