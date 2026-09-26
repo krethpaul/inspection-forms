@@ -1,3 +1,9 @@
+# Let's Encrypt proves domain ownership by fetching /.well-known/acme-challenge/<token> over plain HTTP.
+# The forced domain rules below would otherwise be free to swallow that request, and a certificate that
+# never validates fails SILENTLY - the domain just keeps serving Netlify's *.netlify.app wildcard and the
+# browser shows a privacy warning. So the challenge path is carved out first, and must stay first.
+/.well-known/*    /.well-known/:splat    200
+
 # Campaign short link on the forms domain.
 /try    /try-inspection-forms/    302
 
