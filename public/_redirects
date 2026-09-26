@@ -1,14 +1,17 @@
 # Campaign short link on the forms domain.
 /try    /try-inspection-forms/    302
 
-# kitchenchecklists.com is a domain alias on this project, and everything on it goes to the Kitchen Line
-# Walk demo - that is the only form carrying the demo instructions and the hidden alert-phone field.
+# kitchenchecklists.com is a domain alias on this project; everything on it goes to the Kitchen Line Walk
+# demo, which is the only form carrying the demo instructions and the hidden alert-phone field.
 #
-# Netlify passes the query string through on a 301 automatically, which is the whole reason the domain was
-# moved here: GoDaddy's parked-domain forwarding stripped ?phone=, so the lead's number never reached the
-# form and the over-temp demo text could never fire. Do not "simplify" this back to registrar forwarding.
+# The ?phone= parameter MUST survive the hop: it is what fills that hidden field, and without it the
+# over-temp demo text - the entire point of the campaign - never reaches the lead.
 #
-# Both schemes are listed because http and https need separate rules, and the ! forces the rule even when
-# a real file would otherwise match the path.
+# Netlify's automatic query pass-through did NOT apply here, because the destination is an absolute URL on
+# a different host (verified by testing, 26 Sep 2026). So the parameter is matched and re-emitted by hand.
+# These rules must stay ABOVE the no-parameter ones, which are the base case for someone who just types
+# the domain with nothing after it.
+http://kitchenchecklists.com/*    phone=:phone    https://forms.inspectionreadykitchens.com/kitchen-line-walk/?phone=:phone    301!
+https://kitchenchecklists.com/*   phone=:phone    https://forms.inspectionreadykitchens.com/kitchen-line-walk/?phone=:phone    301!
 http://kitchenchecklists.com/*    https://forms.inspectionreadykitchens.com/kitchen-line-walk/    301!
 https://kitchenchecklists.com/*   https://forms.inspectionreadykitchens.com/kitchen-line-walk/    301!
