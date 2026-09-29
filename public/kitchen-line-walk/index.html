@@ -429,6 +429,15 @@
   </div>
 
   <div class="irk-row">
+    <div class="irk-f full" data-req>
+      <label class="irk-lbl">Your Phone Number<span class="irk-req">*</span></label>
+      <input class="irk-in" type="tel" inputmode="tel" autocomplete="tel" name="q1404_alertPhone" id="irkAlertPhone" placeholder="(555) 555-5555" maxlength="20">
+      <span class="irk-sub">We'll text your results here — including an instant alert if anything above reads over 40°.</span>
+      <div class="irk-err">Please enter a phone number.</div>
+    </div>
+  </div>
+
+  <div class="irk-row">
     <div class="irk-f full" data-req data-kind="sig">
       <label class="irk-lbl">SIGNATURE<span class="irk-req">*</span></label>
       <canvas class="irk-sig" id="irkSig" width="840" height="300"></canvas>
@@ -436,7 +445,6 @@
       <input type="hidden" name="q1394_typeA" id="irkDur">
       <input type="hidden" name="q1396_typeA1396" id="irkP1Age">
       <input type="hidden" name="q1397_typeA1397" id="irkP2Age">
-      <input type="hidden" name="q1404_alertPhone" id="irkAlertPhone">
       <div class="irk-sig-tools"><button type="button" class="irk-clear" id="irkSigClear">Clear</button><span class="irk-sub" style="margin:0">Sign above with your finger or mouse</span></div>
       <div class="irk-err">Please sign the form.</div>
     </div>
@@ -493,7 +501,8 @@
   }
   stampNow(); setInterval(stampNow,15000);
 
-  /* ---- Demo alert phone: silently captured from a ?phone= link param ---- */
+  /* ---- Alert phone: prefilled from a ?phone= link param for anyone who texted CHECK to start;
+     the field itself is visible so someone who arrived straight from the web can type it in instead. ---- */
   try{
     var irkPhoneParam=new URLSearchParams(window.location.search).get('phone');
     if(irkPhoneParam){ document.getElementById('irkAlertPhone').value=irkPhoneParam; }
@@ -589,6 +598,9 @@
     stampNow();
     document.getElementById('irkDur').value=irkT0?Math.round((Date.now()-irkT0)/1000):0;
     document.getElementById('irkSigVal').value=cv.toDataURL('image/png');
+    // Normalize to bare 10 digits no matter how it was entered (typed with dashes/parens/spaces, or
+    // prefilled from a ?phone= link) - the over-temp alert automation expects this exact shape.
+    document.getElementById('irkAlertPhone').value=document.getElementById('irkAlertPhone').value.replace(/\D/g,'').slice(-10);
     var btn=document.getElementById('irkSubmit');btn.disabled=true;btn.textContent='Submitting...';
     banner.style.display='none';
     fetch(form.action,{method:'POST',body:new FormData(form)})
