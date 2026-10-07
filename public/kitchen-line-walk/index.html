@@ -448,6 +448,8 @@
       <input type="hidden" name="q1397_typeA1397" id="irkP2Age">
       <!-- E.164 formatted phone number for GoTo Connect SMS API -->
       <input type="hidden" name="mobileE164" id="irkMobileE164">
+      <!-- Status field for Zap filter: "OVER TEMP" if any temp > 40°F, empty otherwise -->
+      <input type="hidden" name="q1408_status" id="irkStatus">
       <div class="irk-sig-tools"><button type="button" class="irk-clear" id="irkSigClear">Clear</button><span class="irk-sub" style="margin:0">Sign above with your finger or mouse</span></div>
       <div class="irk-err">Please sign the form.</div>
     </div>
@@ -615,6 +617,12 @@
     // Jotform's phone field applies a (###) ###-#### mask and will rewrite anything posted into it,
     // so E.164 goes in a plain text field instead. GoTo Connect rejects a recipient that isn't E.164.
     document.getElementById('irkMobileE164').value = e164(phoneVal);
+    // Set Status = "OVER TEMP" if any temperature field is > 40°F (required by Zap filter for SMS alert)
+    var hasOverTemp=false;
+    form.querySelectorAll('[data-temp]').forEach(function(t){
+      if(t.value!=='' && parseFloat(t.value)>parseFloat(t.getAttribute('data-limit')))hasOverTemp=true;
+    });
+    document.getElementById('irkStatus').value=hasOverTemp?'OVER TEMP':'';
     var btn=document.getElementById('irkSubmit');btn.disabled=true;btn.textContent='Submitting...';
     banner.style.display='none';
     // Submit the form natively to Jotform
