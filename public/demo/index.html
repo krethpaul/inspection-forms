@@ -162,6 +162,15 @@
     <p class="pitch">That was one check. The full Kitchen Line Walk runs your whole kitchen like this &mdash; every cooler, every temp, every shift, all timestamped.</p>
   </section>
 
+  <!-- ============ SCREEN 3b — IN RANGE, NO TEXT ============ -->
+  <section class="screen" id="s3ok">
+    <div class="mark">I<span>K</span></div>
+    <h1>Logged &mdash; no text sent.</h1>
+    <p class="sub"><b id="okTemp">&mdash;</b> is inside the 40&deg;F limit, so there's nothing to alert on. Your entry is saved with its timestamp, exactly like it would be mid-shift.</p>
+    <p class="pitch">Alerts only fire when a reading runs hot. Enter anything over 40&deg; and the text reaches your phone within a minute.</p>
+    <button id="bAgain">Try an over-temp reading &rarr;</button>
+  </section>
+
   <!-- ============ SCREEN 4 — DONE ============ -->
   <section class="screen" id="s4">
     <div class="mark">I<span>K</span></div>
@@ -194,7 +203,7 @@
   var $ = function(id){ return document.getElementById(id); };
 
   function show(n){
-    ["s1","s2","s3","s4"].forEach(function(id){ $(id).className = "screen"; });
+    ["s1","s2","s3","s3ok","s4"].forEach(function(id){ $(id).className = "screen"; });
     $(n).className = "screen on";
     window.scrollTo(0,0);
   }
@@ -256,7 +265,8 @@
       : "IN RANGE";
     $("ask2").textContent = over
       ? "Want the alert on your phone too?"
-      : "Want this entry on your phone too?";
+      : "In range — no alert needed. Save your number to log it?";
+    $("b2").textContent = over ? "Text me the alert" : "Log it";
     $("retry").hidden = over;
 
     track("demo_temp_submitted", { temp:t, status:S.status });
@@ -286,6 +296,13 @@
       "q5_phone3[full]": S.phone, "q6_textbox4": e164(S.phone)
     }).then(function(){
       track("demo_alert_requested", { status:S.status });
+      if(S.temp <= LIMIT){
+        /* in range: the Zap filter sends nothing, so say so */
+        btn.disabled = false; btn.textContent = "Log it";
+        $("okTemp").textContent = (Math.round(S.temp*10)/10) + "°F";
+        show("s3ok");
+        return;
+      }
       show("s3");
       // Alert SMS includes the full form link, so just show confirmation
       setTimeout(function(){
@@ -293,9 +310,14 @@
         show("s4");
       }, 2000);
     }).catch(function(){
-      btn.disabled = false; btn.textContent = "Text me the alert";
+      btn.disabled = false; btn.textContent = S.temp > LIMIT ? "Text me the alert" : "Log it";
       fail($("e2"), "That didn't go through. Try again, or text (501) 441-2114.");
     });
+  });
+
+  $("bAgain").addEventListener("click", function(){
+    $("temp").value = ""; clear($("e1"));
+    show("s1"); $("temp").focus();
   });
 
   /* enter key advances */
