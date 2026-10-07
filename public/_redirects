@@ -11,9 +11,10 @@
 
 # kitchenchecklists.com is a domain alias on this project. All ad traffic for the buy lands here, so it
 # goes to the micro-demo, which asks for one temperature before it asks for anything else.
+# 302, not 301: browsers cache a 301 forever, which is how the old kitchen-line-walk target stuck.
 #
 # The full Kitchen Line Walk stays live and unchanged at /kitchen-line-walk/ for actual customers, and
 # the "Try Our Inspection Forms" Zap still texts that URL directly with ?phone= appended - that chain
 # does not route through this domain, so nothing below affects it.
-http://kitchenchecklists.com/*    https://forms.inspectionreadykitchens.com/demo/    301!
-https://kitchenchecklists.com/*   https://forms.inspectionreadykitchens.com/demo/    301!
+http://kitchenchecklists.com/*    https://forms.inspectionreadykitchens.com/demo/    302!
+https://kitchenchecklists.com/*   https://forms.inspectionreadykitchens.com/demo/    302!
