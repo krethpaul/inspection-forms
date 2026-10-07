@@ -185,7 +185,7 @@
   "use strict";
 
   /* ---------- backend endpoints ---------- */
-  var FORM_A = "262794125504054";   /* temp + status + timestamp + phone */
+  var FORM_A = "262795248075064";   /* temp + status + timestamp + phone */
   var FORM_B = "262794433656064";   /* phone + name + restaurant        */
   var POST   = "https://submit.jotform.com/submit/";
   var LIMIT  = 40;                  /* over-temp threshold, degrees F   */
@@ -293,7 +293,7 @@
       "q2_number0"    : S.temp,
       "q3_textbox1"   : S.status,
       "q4_textbox2"   : S.loggedAt,
-      "q5_phone3[full]": S.phone
+      "q5_phone3[full]": S.phone, "q6_textbox4": e164(S.phone)
     }).then(function(){
       track("demo_alert_requested", { status:S.status });
       show("s3");
