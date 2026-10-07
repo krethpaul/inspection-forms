@@ -288,11 +288,22 @@
     }).then(function(){
       track("demo_alert_requested", { status:S.status });
       show("s3");
-      // Automatically proceed to confirmation after a brief pause
+      // Send full demo link request after a brief pause
       setTimeout(function(){
-        track("demo_full_requested", {});
-        show("s4");
-      }, 2000);
+        send(FORM_B, {
+          "q2_phone0[full]": S.phone,
+          "q3_textbox1"    : "Demo User",
+          "q4_textbox2"    : "Demo Kitchen",
+          "mobileE164"     : e164(S.phone)
+        }).then(function(){
+          track("demo_full_requested", {});
+          show("s4");
+        }).catch(function(){
+          // Even if FORM_B fails, show success - the alert was sent at least
+          track("demo_full_requested", {});
+          show("s4");
+        });
+      }, 1500);
     }).catch(function(){
       btn.disabled = false; btn.textContent = "Text me the alert";
       fail($("e2"), "That didn't go through. Try again, or text (501) 441-2114.");
