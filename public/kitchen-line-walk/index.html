@@ -445,6 +445,8 @@
       <input type="hidden" name="q1394_typeA" id="irkDur">
       <input type="hidden" name="q1396_typeA1396" id="irkP1Age">
       <input type="hidden" name="q1397_typeA1397" id="irkP2Age">
+      <!-- E.164 formatted phone number for GoTo Connect SMS API -->
+      <input type="hidden" name="mobileE164" id="irkMobileE164">
       <div class="irk-sig-tools"><button type="button" class="irk-clear" id="irkSigClear">Clear</button><span class="irk-sub" style="margin:0">Sign above with your finger or mouse</span></div>
       <div class="irk-err">Please sign the form.</div>
     </div>
@@ -571,6 +573,13 @@
   cv.addEventListener('touchstart',start,{passive:false});cv.addEventListener('touchmove',move,{passive:false});cv.addEventListener('touchend',end);
   document.getElementById('irkSigClear').addEventListener('click',function(){ctx.clearRect(0,0,cv.width,cv.height);dirty=false;});
 
+  /* ---- E.164 phone number formatter for GoTo Connect ---- */
+  function e164(v){
+    var d = String(v).replace(/\D/g,"");
+    if(d.length === 11 && d.charAt(0) === "1") d = d.slice(1);
+    return d.length === 10 ? "+1" + d : "";
+  }
+
   /* ---- Validation + submit ---- */
   function validate(){
     var ok=true,first=null;
@@ -600,7 +609,11 @@
     document.getElementById('irkSigVal').value=cv.toDataURL('image/png');
     // Normalize to bare 10 digits no matter how it was entered (typed with dashes/parens/spaces, or
     // prefilled from a ?phone= link) - the over-temp alert automation expects this exact shape.
-    document.getElementById('irkAlertPhone').value=document.getElementById('irkAlertPhone').value.replace(/\D/g,'').slice(-10);
+    var phoneVal = document.getElementById('irkAlertPhone').value.replace(/\D/g,'').slice(-10);
+    document.getElementById('irkAlertPhone').value = phoneVal;
+    // Jotform's phone field applies a (###) ###-#### mask and will rewrite anything posted into it,
+    // so E.164 goes in a plain text field instead. GoTo Connect rejects a recipient that isn't E.164.
+    document.getElementById('irkMobileE164').value = e164(phoneVal);
     var btn=document.getElementById('irkSubmit');btn.disabled=true;btn.textContent='Submitting...';
     banner.style.display='none';
     fetch(form.action,{method:'POST',body:new FormData(form)})
