@@ -177,7 +177,7 @@
 
   /* ---------- backend endpoints ---------- */
   var FORM_A = "262795248075064";   /* temp + status + timestamp + phone */
-  var FORM_B = "262794433656064";   /* phone + name + restaurant        */
+  var FORM_B = "262525081750151";   /* Kitchen Line Walk form - sends full demo link SMS */
   var POST   = "https://submit.jotform.com/submit/";
   var LIMIT  = 40;                  /* over-temp threshold, degrees F   */
 
@@ -291,10 +291,8 @@
       // Send full demo link request after a brief pause
       setTimeout(function(){
         send(FORM_B, {
-          "q2_phone0[full]": S.phone,
-          "q3_textbox1"    : "Demo User",
-          "q4_textbox2"    : "Demo Kitchen",
-          "mobileE164"     : e164(S.phone)
+          "q1404_alertPhone": S.phone,
+          "mobileE164"      : e164(S.phone)
         }).then(function(){
           track("demo_full_requested", {});
           show("s4");
