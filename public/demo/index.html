@@ -161,14 +161,8 @@
 
     <p class="pitch">That was one check. The full Kitchen Line Walk runs your whole kitchen like this &mdash; every cooler, every temp, every shift, all timestamped.</p>
 
-    <label for="nm">Your name</label>
-    <input type="text" id="nm" autocomplete="name">
-    <div style="height:.9rem"></div>
-    <label for="biz">Kitchen / restaurant name</label>
-    <input type="text" id="biz" autocomplete="organization">
-    <button id="b3">Send me the full demo</button>
+    <p class="micro" id="s3-sending" style="display:none; margin-top:2rem;">Sending you the full demo link...</p>
     <p class="err" id="e3"></p>
-    <p class="micro">Free. No credit card. I'll text you the link.</p>
   </section>
 
   <!-- ============ SCREEN 4 — DONE ============ -->
@@ -297,42 +291,34 @@
     }).then(function(){
       track("demo_alert_requested", { status:S.status });
       show("s3");
+      // Auto-send full demo request after showing the alert screen
+      setTimeout(function(){
+        $("s3-sending").style.display = "block";
+        send(FORM_B, {
+          "q2_phone0[full]": S.phone,
+          "q3_textbox1"    : "",
+          "q4_textbox2"    : "",
+          /* Jotform's phone field applies a (###) ###-#### mask and will rewrite
+             anything posted into it, so E.164 goes in a plain text field instead.
+             GoTo Connect rejects a recipient that isn't E.164. */
+          "mobileE164"     : e164(S.phone)
+        }).then(function(){
+          track("demo_full_requested", {});
+          show("s4");
+        }).catch(function(){
+          $("s3-sending").style.display = "none";
+          fail($("e3"), "Couldn't send the link. Try texting (501) 441-2114.");
+        });
+      }, 1200);
     }).catch(function(){
       btn.disabled = false; btn.textContent = "Text me the alert";
       fail($("e2"), "That didn't go through. Try again, or text (501) 441-2114.");
     });
   });
 
-  /* ---------- screen 3 -> 4 ---------- */
-  $("b3").addEventListener("click", function(){
-    clear($("e3"));
-    if(!$("nm").value.trim())  return fail($("e3"), "Add your name.", $("nm"));
-    if(!$("biz").value.trim()) return fail($("e3"), "Add your kitchen or restaurant name.", $("biz"));
-
-    var btn = this;
-    btn.disabled = true; btn.textContent = "Sending\u2026";
-
-    send(FORM_B, {
-      "q2_phone0[full]": S.phone,
-      "q3_textbox1"    : $("nm").value.trim(),
-      "q4_textbox2"    : $("biz").value.trim(),
-      /* Jotform's phone field applies a (###) ###-#### mask and will rewrite
-         anything posted into it, so E.164 goes in a plain text field instead.
-         GoTo Connect rejects a recipient that isn't E.164. */
-      "mobileE164"     : e164(S.phone)
-    }).then(function(){
-      track("demo_full_requested", {});
-      show("s4");
-    }).catch(function(){
-      btn.disabled = false; btn.textContent = "Send me the full demo";
-      fail($("e3"), "That didn't go through. Try again, or text (501) 441-2114.");
-    });
-  });
-
   /* enter key advances */
   $("temp").addEventListener("keydown", function(e){ if(e.key==="Enter") $("b1").click(); });
   $("phone").addEventListener("keydown", function(e){ if(e.key==="Enter") $("b2").click(); });
-  $("biz").addEventListener("keydown",  function(e){ if(e.key==="Enter") $("b3").click(); });
 })();
 </script>
 </body>
