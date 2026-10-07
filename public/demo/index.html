@@ -160,9 +160,6 @@
     <p class="sub">Your over-temp text arrives within a minute, exactly like it would mid-shift.</p>
 
     <p class="pitch">That was one check. The full Kitchen Line Walk runs your whole kitchen like this &mdash; every cooler, every temp, every shift, all timestamped.</p>
-
-    <p class="micro" id="s3-sending" style="display:none; margin-top:2rem;">Sending you the full demo link...</p>
-    <p class="err" id="e3"></p>
   </section>
 
   <!-- ============ SCREEN 4 — DONE ============ -->
@@ -291,25 +288,11 @@
     }).then(function(){
       track("demo_alert_requested", { status:S.status });
       show("s3");
-      // Auto-send full demo request after showing the alert screen
+      // Automatically proceed to confirmation after a brief pause
       setTimeout(function(){
-        $("s3-sending").style.display = "block";
-        send(FORM_B, {
-          "q2_phone0[full]": S.phone,
-          "q3_textbox1"    : "",
-          "q4_textbox2"    : "",
-          /* Jotform's phone field applies a (###) ###-#### mask and will rewrite
-             anything posted into it, so E.164 goes in a plain text field instead.
-             GoTo Connect rejects a recipient that isn't E.164. */
-          "mobileE164"     : e164(S.phone)
-        }).then(function(){
-          track("demo_full_requested", {});
-          show("s4");
-        }).catch(function(){
-          $("s3-sending").style.display = "none";
-          fail($("e3"), "Couldn't send the link. Try texting (501) 441-2114.");
-        });
-      }, 1200);
+        track("demo_full_requested", {});
+        show("s4");
+      }, 2000);
     }).catch(function(){
       btn.disabled = false; btn.textContent = "Text me the alert";
       fail($("e2"), "That didn't go through. Try again, or text (501) 441-2114.");
