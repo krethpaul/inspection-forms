@@ -1,1 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The 60-Second Line Check</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&amp;family=IBM+Plex+Mono:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#101B2D; --paper:#EFF1F3; --card:#FFFFFF;
+    --red:#C8352C; --red-wash:#FBEDEC; --red-line:#F0C9C6;
+    --go:#17795E; --go-wash:#E4EFEA; --go-line:#BFDCD0;
+    --steel:#5A6B7D; --rule:#C9D1D8; --focus:#2F6FD0;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper); color:var(--ink);
+    font-family:"IBM Plex Sans",system-ui,sans-serif; font-size:17px; line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .stage{
+    min-height:100dvh; display:flex; flex-direction:column; justify-content:center;
+    max-width:30rem; margin:0 auto;
+    padding:1.5rem 1.25rem calc(1.5rem + env(safe-area-inset-bottom));
+  }
+  .screen{display:none;}
+  .screen.on{display:block; animation:in .32s ease-out;}
+  @keyframes in{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  @media (prefers-reduced-motion:reduce){.screen.on{animation:none;}}
 
+  .mark{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:1.9rem; height:1.9rem; border-radius:.25rem; background:var(--ink); color:#fff;
+    font-family:"Archivo",sans-serif; font-weight:800; font-size:.85rem; letter-spacing:-.02em;
+    margin-bottom:1.5rem;
+  }
+  .mark span{color:var(--red);}
+
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace; font-size:.72rem; font-weight:600;
+    letter-spacing:.12em; text-transform:uppercase; color:var(--steel); margin:0 0 .7rem;
+  }
+  h1{
+    font-family:"Archivo",sans-serif; font-weight:800;
+    font-size:clamp(1.85rem,7vw,2.4rem); line-height:1.05; letter-spacing:-.03em;
+    margin:0 0 .75rem;
+  }
+  .sub{color:var(--steel); font-size:1rem; margin:0 0 1.75rem;}
+  .micro{color:var(--steel); font-size:.82rem; margin:.7rem 0 0; text-align:center;}
+  .hint{color:var(--steel); font-size:.85rem; margin:.5rem 0 0;}
+
+  label{display:block; font-size:.88rem; font-weight:600; margin-bottom:.4rem;}
+  .tempwrap{position:relative;}
+  .tempwrap::after{
+    content:"\00B0F"; position:absolute; right:1rem; top:50%; transform:translateY(-50%);
+    font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:1.3rem; color:var(--steel);
+    pointer-events:none;
+  }
+  #temp{
+    font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:1.9rem;
+    padding:.85rem 3.2rem .85rem 1rem; text-align:left;
+  }
+  input{
+    width:100%; font:inherit; font-size:1.05rem; color:var(--ink); background:#fff;
+    border:1px solid var(--rule); border-radius:.35rem; padding:.75rem .85rem;
+  }
+  input:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid var(--focus); outline-offset:2px;}
+
+  button{
+    width:100%; font-family:"Archivo",sans-serif; font-weight:700; font-size:1.05rem;
+    background:var(--red); color:#fff; border:0; border-radius:.35rem;
+    padding:.9rem 1rem; margin-top:1.1rem; cursor:pointer;
+  }
+  button:hover{background:#B22E26;}
+  button[disabled]{opacity:.55; cursor:default;}
+
+  /* entry card — the proof */
+  .entry{
+    background:var(--card); border:1px solid var(--rule); border-radius:.45rem;
+    padding:1.1rem 1.15rem; margin-bottom:.9rem;
+  }
+  .entry .name{font-family:"Archivo",sans-serif; font-weight:700; font-size:1.05rem;}
+  .entry .reading{
+    font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:2.4rem;
+    font-variant-numeric:tabular-nums; line-height:1.1; margin:.2rem 0 .55rem;
+  }
+  .entry .stamp{font-size:.9rem; color:var(--steel);}
+  .entry .stamp b{font-family:"IBM Plex Mono",monospace; font-weight:600; color:var(--ink);}
+  .badge{
+    display:inline-block; margin-top:.8rem; padding:.3rem .65rem; border-radius:.25rem;
+    font-size:.78rem; font-weight:600; letter-spacing:.02em;
+  }
+  .badge.over{background:var(--red-wash); color:var(--red); border:1px solid var(--red-line);}
+  .badge.okay{background:var(--go-wash); color:var(--go); border:1px solid var(--go-line);}
+  .entry.over{border-color:var(--red-line);}
+  .entry.over .reading{color:var(--red);}
+  .proofline{font-size:.95rem; color:var(--steel); margin:0 0 1.6rem;}
+
+  .ask{font-family:"Archivo",sans-serif; font-weight:700; font-size:1.2rem; margin:0 0 .85rem;}
+  .retry{display:block; text-align:center; font-size:.85rem; color:var(--steel); margin-top:.9rem;}
+  .retry[hidden]{display:none;}
+
+  .disclosure{font-size:.72rem; line-height:1.45; color:var(--steel); margin:.9rem 0 0;}
+  .err{color:var(--red); font-size:.85rem; margin:.65rem 0 0; display:none;}
+  .err.show{display:block;}
+  .signoff{font-size:.95rem; color:var(--steel); margin-top:1.5rem;}
+  .pitch{
+    border-left:3px solid var(--ink); padding-left:.9rem; margin:0 0 1.6rem;
+    font-size:.97rem; color:var(--steel);
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <!-- ============ SCREEN 1 — THE CHECK ============ -->
+  <section class="screen on" id="s1">
+    <div class="mark">I<span>K</span></div>
+    <p class="eyebrow">For restaurant operators</p>
+    <h1>The inspector found what your clipboard missed.</h1>
+    <p class="sub">Try one check right now. 60 seconds. No signup, no download, no credit card.</p>
+
+    <label for="temp">Walk-in cooler temp</label>
+    <div class="tempwrap">
+      <input type="text" id="temp" inputmode="decimal" autocomplete="off" placeholder="e.g. 45">
+    </div>
+    <p class="hint">Tip: enter anything over 40&deg; and watch what happens.</p>
+
+    <button id="b1">Stamp it &rarr;</button>
+    <p class="err" id="e1"></p>
+    <p class="micro">No name. No email. Just a temperature.</p>
+  </section>
+
+  <!-- ============ SCREEN 2 — THE PROOF ============ -->
+  <section class="screen" id="s2">
+    <div class="entry" id="card">
+      <div class="name">Walk-in cooler</div>
+      <div class="reading" id="reading">&mdash;</div>
+      <div class="stamp">Logged today at <b id="stamp">&mdash;</b></div>
+      <div class="badge" id="badge">&mdash;</div>
+    </div>
+    <p class="proofline">That timestamp wrote itself. No clipboard, no end-of-shift fill-in.</p>
+
+    <p class="ask" id="ask2">Want the alert on your phone too?</p>
+    <label for="phone">Mobile number</label>
+    <input type="tel" id="phone" inputmode="tel" autocomplete="tel" placeholder="(501) 555-0134">
+    <button id="b2">Text me the alert</button>
+    <p class="err" id="e2"></p>
+    <p class="micro">We only use this to send your demo alert &mdash; nothing else.</p>
+    <a class="retry" id="retry" href="#" hidden>&larr; Try a temp over 40&deg; instead</a>
+    <p class="disclosure">By entering your number, you agree to receive automated text messages about this demo. Message and data rates may apply. Reply STOP to opt out.</p>
+  </section>
+
+  <!-- ============ SCREEN 3 — ALERT SENT ============ -->
+  <section class="screen" id="s3">
+    <h1>Alert sent &mdash; check your phone.</h1>
+    <p class="sub">Your over-temp text arrives within a minute, exactly like it would mid-shift.</p>
+
+    <p class="pitch">That was one check. The full Kitchen Line Walk runs your whole kitchen like this &mdash; every cooler, every temp, every shift, all timestamped.</p>
+
+    <label for="nm">Your name</label>
+    <input type="text" id="nm" autocomplete="name">
+    <div style="height:.9rem"></div>
+    <label for="biz">Kitchen / restaurant name</label>
+    <input type="text" id="biz" autocomplete="organization">
+    <button id="b3">Send me the full demo</button>
+    <p class="err" id="e3"></p>
+    <p class="micro">Free. No credit card. I'll text you the link.</p>
+  </section>
+
+  <!-- ============ SCREEN 4 — DONE ============ -->
+  <section class="screen" id="s4">
+    <div class="mark">I<span>K</span></div>
+    <h1>It's on its way &mdash; check your texts.</h1>
+    <p class="signoff">&mdash; Paul, 30 years in kitchens. I built this for mine first.</p>
+  </section>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- backend endpoints ---------- */
+  var FORM_A = "262794125504054";   /* temp + status + timestamp + phone */
+  var FORM_B = "262794433656064";   /* phone + name + restaurant        */
+  var POST   = "https://submit.jotform.com/submit/";
+  var LIMIT  = 40;                  /* over-temp threshold, degrees F   */
+
+  /* ---------- analytics ---------- */
+  function track(evt, props){
+    props = props || {};
+    try{ window.dataLayer = window.dataLayer || []; window.dataLayer.push(Object.assign({event:evt}, props)); }catch(e){}
+    try{ if(typeof fbq === "function") fbq("trackCustom", evt, props); }catch(e){}
+    try{ if(typeof gtag === "function") gtag("event", evt, props); }catch(e){}
+  }
+
+  /* ---------- state ---------- */
+  var S = { temp:null, status:"", loggedAt:"", phone:"" };
+
+  var $ = function(id){ return document.getElementById(id); };
+
+  function show(n){
+    ["s1","s2","s3","s4"].forEach(function(id){ $(id).className = "screen"; });
+    $(n).className = "screen on";
+    window.scrollTo(0,0);
+  }
+  function fail(el, msg, focus){
+    el.textContent = msg; el.className = "err show";
+    if(focus) focus.focus();
+    return false;
+  }
+  function clear(el){ el.className = "err"; }
+
+  function send(formId, fields){
+    var fd = new FormData();
+    fd.append("formID", formId);
+    fd.append("simple_spc", formId + "-" + formId);
+    Object.keys(fields).forEach(function(k){ fd.append(k, fields[k]); });
+    return fetch(POST + formId + "/", { method:"POST", body:fd }).then(function(r){
+      if(!r.ok) throw new Error("rejected");
+      return true;
+    });
+  }
+
+  function maskPhone(v){
+    var d = v.replace(/\D/g,"").slice(0,10);
+    if(d.length < 4) return d;
+    if(d.length < 7) return "(" + d.slice(0,3) + ") " + d.slice(3);
+    return "(" + d.slice(0,3) + ") " + d.slice(3,6) + "-" + d.slice(6);
+  }
+  $("phone").addEventListener("input", function(){ this.value = maskPhone(this.value); });
+
+  /* ---------- screen 1 -> 2 ---------- */
+  $("b1").addEventListener("click", function(){
+    clear($("e1"));
+    var raw = $("temp").value.trim().replace(/[^\d.\-]/g,"");
+    if(raw === "") return fail($("e1"), "Enter a cooler temperature to stamp.", $("temp"));
+    var t = parseFloat(raw);
+    if(isNaN(t)) return fail($("e1"), "That isn't a number \u2014 try something like 45.", $("temp"));
+    if(t < -40 || t > 250) return fail($("e1"), "That reading is outside anything a cooler would show.", $("temp"));
+
+    var now = new Date();
+    S.temp     = t;
+    S.status   = t > LIMIT ? "OVER TEMP" : "IN RANGE";
+    S.loggedAt = now.toLocaleTimeString([], {hour:"numeric", minute:"2-digit", second:"2-digit"});
+
+    $("reading").textContent = (Math.round(t*10)/10) + "\u00B0F";
+    $("stamp").textContent   = S.loggedAt;
+
+    var over = t > LIMIT;
+    $("card").className  = over ? "entry over" : "entry";
+    $("badge").className = over ? "badge over" : "badge okay";
+    $("badge").textContent = over
+      ? "OVER TEMP \u2014 above the " + LIMIT + "\u00B0F limit"
+      : "IN RANGE";
+    $("ask2").textContent = over
+      ? "Want the alert on your phone too?"
+      : "Want this entry on your phone too?";
+    $("retry").hidden = over;
+
+    track("demo_temp_submitted", { temp:t, status:S.status });
+    show("s2");
+  });
+
+  $("retry").addEventListener("click", function(e){
+    e.preventDefault();
+    $("temp").value = ""; clear($("e1"));
+    show("s1"); $("temp").focus();
+  });
+
+  /* ---------- screen 2 -> 3 ---------- */
+  $("b2").addEventListener("click", function(){
+    clear($("e2"));
+    var digits = $("phone").value.replace(/\D/g,"");
+    if(digits.length !== 10) return fail($("e2"), "That mobile number needs 10 digits.", $("phone"));
+    S.phone = $("phone").value;
+
+    var btn = this;
+    btn.disabled = true; btn.textContent = "Sending\u2026";
+
+    send(FORM_A, {
+      "q2_number0"    : S.temp,
+      "q3_textbox1"   : S.status,
+      "q4_textbox2"   : S.loggedAt,
+      "q5_phone3[full]": S.phone
+    }).then(function(){
+      track("demo_alert_requested", { status:S.status });
+      show("s3");
+    }).catch(function(){
+      btn.disabled = false; btn.textContent = "Text me the alert";
+      fail($("e2"), "That didn't go through. Try again, or text (501) 441-2114.");
+    });
+  });
+
+  /* ---------- screen 3 -> 4 ---------- */
+  $("b3").addEventListener("click", function(){
+    clear($("e3"));
+    if(!$("nm").value.trim())  return fail($("e3"), "Add your name.", $("nm"));
+    if(!$("biz").value.trim()) return fail($("e3"), "Add your kitchen or restaurant name.", $("biz"));
+
+    var btn = this;
+    btn.disabled = true; btn.textContent = "Sending\u2026";
+
+    send(FORM_B, {
+      "q2_phone0[full]": S.phone,
+      "q3_textbox1"    : $("nm").value.trim(),
+      "q4_textbox2"    : $("biz").value.trim()
+    }).then(function(){
+      track("demo_full_requested", {});
+      show("s4");
+    }).catch(function(){
+      btn.disabled = false; btn.textContent = "Send me the full demo";
+      fail($("e3"), "That didn't go through. Try again, or text (501) 441-2114.");
+    });
+  });
+
+  /* enter key advances */
+  $("temp").addEventListener("keydown", function(e){ if(e.key==="Enter") $("b1").click(); });
+  $("phone").addEventListener("keydown", function(e){ if(e.key==="Enter") $("b2").click(); });
+  $("biz").addEventListener("keydown",  function(e){ if(e.key==="Enter") $("b3").click(); });
+})();
+</script>
+</body>
+</html>

@@ -4,20 +4,16 @@
 # browser shows a privacy warning. So the challenge path is carved out first, and must stay first.
 /.well-known/*    /.well-known/:splat    200
 
-# Campaign short link on the forms domain.
-/try    /try-inspection-forms/    302
+# Campaign short link on the forms domain. Points at the 60-Second Line Check micro-demo (Oct 2026),
+# NOT the full Kitchen Line Walk - a cold ad click that lands on a 50-field form with two photo uploads
+# and a signature converts at zero, which is what 276 clicks proved.
+/try    /demo/    302
 
-# kitchenchecklists.com is a domain alias on this project; everything on it goes to the Kitchen Line Walk
-# demo, which is the only form carrying the demo instructions and the hidden alert-phone field.
+# kitchenchecklists.com is a domain alias on this project. All ad traffic for the buy lands here, so it
+# goes to the micro-demo, which asks for one temperature before it asks for anything else.
 #
-# The ?phone= parameter MUST survive the hop: it is what fills that hidden field, and without it the
-# over-temp demo text - the entire point of the campaign - never reaches the lead.
-#
-# Netlify's automatic query pass-through did NOT apply here, because the destination is an absolute URL on
-# a different host (verified by testing, 26 Sep 2026). So the parameter is matched and re-emitted by hand.
-# These rules must stay ABOVE the no-parameter ones, which are the base case for someone who just types
-# the domain with nothing after it.
-http://kitchenchecklists.com/*    phone=:phone    https://forms.inspectionreadykitchens.com/kitchen-line-walk/?phone=:phone    301!
-https://kitchenchecklists.com/*   phone=:phone    https://forms.inspectionreadykitchens.com/kitchen-line-walk/?phone=:phone    301!
-http://kitchenchecklists.com/*    https://forms.inspectionreadykitchens.com/kitchen-line-walk/    301!
-https://kitchenchecklists.com/*   https://forms.inspectionreadykitchens.com/kitchen-line-walk/    301!
+# The full Kitchen Line Walk stays live and unchanged at /kitchen-line-walk/ for actual customers, and
+# the "Try Our Inspection Forms" Zap still texts that URL directly with ?phone= appended - that chain
+# does not route through this domain, so nothing below affects it.
+http://kitchenchecklists.com/*    https://forms.inspectionreadykitchens.com/demo/    301!
+https://kitchenchecklists.com/*   https://forms.inspectionreadykitchens.com/demo/    301!
