@@ -226,6 +226,13 @@
     });
   }
 
+  /* "(501) 441-2114" -> "+15014412114" */
+  function e164(v){
+    var d = String(v).replace(/\D/g,"");
+    if(d.length === 11 && d.charAt(0) === "1") d = d.slice(1);
+    return d.length === 10 ? "+1" + d : "";
+  }
+
   function maskPhone(v){
     var d = v.replace(/\D/g,"").slice(0,10);
     if(d.length < 4) return d;
@@ -308,7 +315,11 @@
     send(FORM_B, {
       "q2_phone0[full]": S.phone,
       "q3_textbox1"    : $("nm").value.trim(),
-      "q4_textbox2"    : $("biz").value.trim()
+      "q4_textbox2"    : $("biz").value.trim(),
+      /* Jotform's phone field applies a (###) ###-#### mask and will rewrite
+         anything posted into it, so E.164 goes in a plain text field instead.
+         GoTo Connect rejects a recipient that isn't E.164. */
+      "mobileE164"     : e164(S.phone)
     }).then(function(){
       track("demo_full_requested", {});
       show("s4");
