@@ -4,21 +4,21 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The 60-Second Line Check</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&amp;family=IBM+Plex+Mono:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#101B2D; --paper:#EFF1F3; --card:#FFFFFF;
+    --ink:#151515; --paper:#FFFFFF; --card:#FFFFFF;
+    --blue:#3570BF; --blue-dark:#2B5DA3;
     --red:#C8352C; --red-wash:#FBEDEC; --red-line:#F0C9C6;
     --go:#17795E; --go-wash:#E4EFEA; --go-line:#BFDCD0;
-    --steel:#5A6B7D; --rule:#C9D1D8; --focus:#2F6FD0;
+    --steel:#5F6670; --muted:#8A9099; --rule:#D9DDE2; --focus:#3570BF;
+    --promo:#FEF3C4; --promo-line:#F4CC4F; --promo-ink:#3D3412;
+    --sans:-apple-system,BlinkMacSystemFont,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
     background:var(--paper); color:var(--ink);
-    font-family:"IBM Plex Sans",system-ui,sans-serif; font-size:17px; line-height:1.5;
+    font-family:var(--sans); font-size:17px; line-height:1.5;
     -webkit-font-smoothing:antialiased;
   }
   .stage{
@@ -33,65 +33,68 @@
 
   .mark{
     display:inline-flex; align-items:center; justify-content:center;
-    width:1.9rem; height:1.9rem; border-radius:.25rem; background:var(--ink); color:#fff;
-    font-family:"Archivo",sans-serif; font-weight:800; font-size:.85rem; letter-spacing:-.02em;
-    margin-bottom:1.5rem;
+    width:1.9rem; height:1.9rem; border-radius:.3rem; background:#101B2D; color:#fff;
+    font-weight:800; font-size:.85rem; letter-spacing:-.02em; margin-bottom:1.5rem;
   }
   .mark span{color:var(--red);}
 
   .eyebrow{
-    font-family:"IBM Plex Mono",monospace; font-size:.72rem; font-weight:600;
-    letter-spacing:.12em; text-transform:uppercase; color:var(--steel); margin:0 0 .7rem;
+    font-size:.78rem; font-weight:700; letter-spacing:.04em;
+    text-transform:uppercase; color:var(--muted); margin:0 0 .9rem;
   }
+  .promo{
+    background:var(--promo); border:2px solid var(--promo-line); border-radius:.9rem;
+    color:var(--promo-ink); font-size:1.05rem; line-height:1.55;
+    padding:.85rem 1.1rem; margin:0 0 1.4rem;
+  }
+  .promo b{font-weight:800; color:#2A230A;}
   h1{
-    font-family:"Archivo",sans-serif; font-weight:800;
-    font-size:clamp(1.85rem,7vw,2.4rem); line-height:1.05; letter-spacing:-.03em;
-    margin:0 0 .75rem;
+    font-weight:800; font-size:clamp(2rem,8.5vw,2.5rem); line-height:1.12; letter-spacing:-.01em;
+    margin:0 0 .9rem;
   }
-  .sub{color:var(--steel); font-size:1rem; margin:0 0 1.75rem;}
-  .micro{color:var(--steel); font-size:.82rem; margin:.7rem 0 0; text-align:center;}
-  .hint{color:var(--steel); font-size:.85rem; margin:.5rem 0 0;}
+  .sub{color:var(--steel); font-size:1.1rem; margin:0 0 1.6rem;}
+  .micro{color:var(--muted); font-size:.9rem; margin:.8rem 0 0; text-align:center;}
+  .hint{color:var(--muted); font-size:.95rem; margin:.6rem 0 0;}
 
-  label{display:block; font-size:.88rem; font-weight:600; margin-bottom:.4rem;}
+  label{display:block; font-size:1rem; font-weight:700; margin-bottom:.5rem;}
   .tempwrap{position:relative;}
-  .tempwrap::after{
-    content:"\00B0F"; position:absolute; right:1rem; top:50%; transform:translateY(-50%);
-    font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:1.3rem; color:var(--steel);
-    pointer-events:none;
+  .tempwrap .unit{
+    position:absolute; right:1.1rem; top:50%; transform:translateY(-50%);
+    font-size:1.6rem; color:var(--muted); pointer-events:none;
   }
-  #temp{
-    font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:1.9rem;
-    padding:.85rem 3.2rem .85rem 1rem; text-align:left;
-  }
+  #temp{font-size:1.6rem; padding:.9rem 3.4rem .9rem 1.1rem; text-align:left;}
   input{
     width:100%; font:inherit; font-size:1.05rem; color:var(--ink); background:#fff;
-    border:1px solid var(--rule); border-radius:.35rem; padding:.75rem .85rem;
+    border:2px solid var(--rule); border-radius:.9rem; padding:.8rem .95rem;
+    -webkit-appearance:none; appearance:none;
   }
+  input::placeholder{color:#A9AEB5;}
+  input:focus{border-color:var(--blue); outline:none;}
   input:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid var(--focus); outline-offset:2px;}
 
   button{
-    width:100%; font-family:"Archivo",sans-serif; font-weight:700; font-size:1.05rem;
-    background:var(--red); color:#fff; border:0; border-radius:.35rem;
-    padding:.9rem 1rem; margin-top:1.1rem; cursor:pointer;
+    width:100%; font:inherit; font-weight:800; font-size:1.2rem;
+    background:var(--blue); color:#fff; border:0; border-radius:.9rem;
+    padding:1rem 1rem; margin-top:1.1rem; cursor:pointer;
   }
-  button:hover{background:#B22E26;}
+  button:hover{background:var(--blue-dark);}
   button[disabled]{opacity:.55; cursor:default;}
 
   /* entry card — the proof */
   .entry{
-    background:var(--card); border:1px solid var(--rule); border-radius:.45rem;
+    background:var(--card); border:2px solid var(--rule); border-radius:.9rem;
     padding:1.1rem 1.15rem; margin-bottom:.9rem;
   }
-  .entry .name{font-family:"Archivo",sans-serif; font-weight:700; font-size:1.05rem;}
+  .entry .name{font-weight:700; font-size:1.05rem;}
   .entry .reading{
-    font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:2.4rem;
+    font-weight:800; font-size:2.4rem;
     font-variant-numeric:tabular-nums; line-height:1.1; margin:.2rem 0 .55rem;
   }
   .entry .stamp{font-size:.9rem; color:var(--steel);}
-  .entry .stamp b{font-family:"IBM Plex Mono",monospace; font-weight:600; color:var(--ink);}
+  .entry .stamp b{font-variant-numeric:tabular-nums; color:var(--ink);}
   .badge{
-    display:inline-block; margin-top:.8rem; padding:.3rem .65rem; border-radius:.25rem;
-    font-size:.78rem; font-weight:600; letter-spacing:.02em;
+    display:inline-block; margin-top:.8rem; padding:.3rem .65rem; border-radius:.4rem;
+    font-size:.8rem; font-weight:700; letter-spacing:.02em;
   }
   .badge.over{background:var(--red-wash); color:var(--red); border:1px solid var(--red-line);}
   .badge.okay{background:var(--go-wash); color:var(--go); border:1px solid var(--go-line);}
@@ -99,17 +102,17 @@
   .entry.over .reading{color:var(--red);}
   .proofline{font-size:.95rem; color:var(--steel); margin:0 0 1.6rem;}
 
-  .ask{font-family:"Archivo",sans-serif; font-weight:700; font-size:1.2rem; margin:0 0 .85rem;}
-  .retry{display:block; text-align:center; font-size:.85rem; color:var(--steel); margin-top:.9rem;}
+  .ask{font-weight:800; font-size:1.25rem; margin:0 0 .85rem;}
+  .retry{display:block; text-align:center; font-size:.9rem; color:var(--steel); margin-top:.9rem;}
   .retry[hidden]{display:none;}
 
-  .disclosure{font-size:.72rem; line-height:1.45; color:var(--steel); margin:.9rem 0 0;}
-  .err{color:var(--red); font-size:.85rem; margin:.65rem 0 0; display:none;}
+  .disclosure{font-size:.75rem; line-height:1.45; color:var(--muted); margin:.9rem 0 0;}
+  .err{color:var(--red); font-size:.9rem; margin:.65rem 0 0; display:none;}
   .err.show{display:block;}
   .signoff{font-size:.95rem; color:var(--steel); margin-top:1.5rem;}
   .pitch{
-    border-left:3px solid var(--ink); padding-left:.9rem; margin:0 0 1.6rem;
-    font-size:.97rem; color:var(--steel);
+    border-left:3px solid var(--blue); padding-left:.9rem; margin:0 0 1.6rem;
+    font-size:1rem; color:var(--steel);
   }
 </style>
 </head>
@@ -118,14 +121,15 @@
 
   <!-- ============ SCREEN 1 — THE CHECK ============ -->
   <section class="screen on" id="s1">
-    <div class="mark">I<span>K</span></div>
     <p class="eyebrow">For restaurant operators</p>
+    <p class="promo"><b>75% OFF ends soon &mdash;</b> Basic $19/mo &middot; Full Line Check $29/mo. This is what you're buying. Try one check free:</p>
     <h1>The inspector found what your clipboard missed.</h1>
-    <p class="sub">Try one check right now. 60 seconds. No signup, no download, no credit card.</p>
+    <p class="sub">60 seconds. No signup, no download, no credit card.</p>
 
     <label for="temp">Walk-in cooler temp</label>
     <div class="tempwrap">
       <input type="text" id="temp" inputmode="decimal" autocomplete="off" placeholder="e.g. 45">
+      <span class="unit" aria-hidden="true">&deg;F</span>
     </div>
     <p class="hint">Tip: enter anything over 40&deg; and watch what happens.</p>
 
