@@ -190,8 +190,13 @@
 
   /* ---------- backend endpoints ---------- */
   var FORM_A = "262795248075064";   /* 60-Second Demo - Step 1 Alert v2 — triggers Zap 382736591 for SMS alert */
+  var FORM_T = "262828121534051";   /* 60-Second Demo - Step 1 Temps — silent drop-off log, NO Zap attached */
   var POST   = "https://submit.jotform.com/submit/";
   var LIMIT  = 40;                  /* over-temp threshold, degrees F   */
+
+  /* One id per page load, so repeated tries from the same visit can be
+     told apart from separate visitors when counting. */
+  var VISIT = "v" + Date.now().toString(36) + Math.random().toString(36).slice(2,6);
 
   /* ---------- analytics ---------- */
   function track(evt, props){
@@ -280,6 +285,20 @@
     $("retry").hidden = over;
 
     track("demo_temp_submitted", { temp:t, status:S.status });
+
+    /* Silent drop-off log. Fire and forget: this must never block the
+       screen change or surface an error, because the visitor hasn't
+       asked for anything yet. A failure here costs us a data point,
+       nothing more. */
+    try{
+      send(FORM_T, {
+        "q2_q2_textbox0": t,
+        "q3_q3_textbox1": S.status,
+        "q4_q4_textbox2": now.toISOString(),
+        "q5_q5_textbox3": VISIT
+      })["catch"](function(){});
+    }catch(e){}
+
     show("s2");
   });
 
