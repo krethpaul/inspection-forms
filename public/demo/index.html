@@ -11,7 +11,7 @@
     --red:#C8352C; --red-wash:#FBEDEC; --red-line:#F0C9C6;
     --go:#17795E; --go-wash:#E4EFEA; --go-line:#BFDCD0;
     --steel:#5F6670; --muted:#8A9099; --rule:#D9DDE2; --focus:#3570BF;
-    --promo:#FEF3C4; --promo-line:#F4CC4F; --promo-ink:#3D3412;
+    --promo:#FFE94A; --promo-line:#E8C200; --promo-ink:#332B07;
     --sans:-apple-system,BlinkMacSystemFont,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   }
   *{box-sizing:border-box;}
@@ -54,7 +54,12 @@
   }
   .sub{color:var(--steel); font-size:1.1rem; margin:0 0 1.6rem;}
   .micro{color:var(--muted); font-size:.9rem; margin:.8rem 0 0; text-align:center;}
-  .hint{color:var(--muted); font-size:.95rem; margin:.6rem 0 0;}
+  .hint{
+    display:inline-block;
+    background:var(--promo); border:2px solid var(--promo-line); border-radius:.6rem;
+    color:var(--promo-ink); font-size:.95rem; font-weight:700; line-height:1.45;
+    padding:.5rem .85rem; margin:.7rem 0 0;
+  }
 
   label{display:block; font-size:1rem; font-weight:700; margin-bottom:.5rem;}
   .tempwrap{position:relative;}
@@ -122,7 +127,7 @@
   <!-- ============ SCREEN 1 — THE CHECK ============ -->
   <section class="screen on" id="s1">
     <p class="eyebrow">For restaurant operators</p>
-    <p class="promo"><b>75% OFF ends soon &mdash;</b> Basic $19/mo &middot; Full Line Check $29/mo. This is what you're buying. Try one check free:</p>
+    <p class="promo"><b>This demo is free</b> and represents just a small sample of what you can get &mdash; the full Kitchen Line Walk is 75% OFF now and starts at $19/mo</p>
     <h1>The inspector found what your clipboard missed.</h1>
     <p class="sub">60 seconds. No signup, no download, no credit card.</p>
 
