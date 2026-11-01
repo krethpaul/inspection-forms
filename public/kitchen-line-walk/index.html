@@ -545,6 +545,18 @@
     }catch(e){cb(null);}
   }
 
+  // data: URL -> File, keeping the original's timestamp so any photo-age check
+  // still measures when the picture was taken, not when it was resized.
+  function irkDataUrlToFile(dataUrl,orig){
+    var parts=String(dataUrl).split(',');
+    if(parts.length<2) return null;
+    var bin=atob(parts[1]);
+    var arr=new Uint8Array(bin.length);
+    for(var i=0;i<bin.length;i++) arr[i]=bin.charCodeAt(i);
+    var base=(orig&&orig.name?orig.name:'photo').replace(/\.[^.]+$/,'');
+    return new File([arr],base+'.jpg',{type:'image/jpeg',lastModified:(orig&&orig.lastModified)||Date.now()});
+  }
+
   /* ---- Photo previews (one per upload field) ---- */
   form.querySelectorAll('input[type=file]').forEach(function(file){
     file.addEventListener('change',function(){
@@ -552,7 +564,18 @@
       if(file.files[0]){
         img.src=URL.createObjectURL(file.files[0]);img.hidden=false;
         file.parentNode.querySelector('.irk-btn2').textContent='Retake Photo';
-        irkScale(file.files[0],1400,0.62,function(d){ if(d) irkPhotos[file.name]={label:irkLabelOf(file),data:d}; });
+        irkScale(file.files[0],1400,0.62,function(d){
+          if(!d) return;
+          irkPhotos[file.name]={label:irkLabelOf(file),data:d};
+          try{
+            var small=irkDataUrlToFile(d,file.files[0]);
+            if(small&&small.size<file.files[0].size){
+              var dt=new DataTransfer();
+              dt.items.add(small);
+              file.files=dt.files;
+            }
+          }catch(e){}
+        });
         var tgt=irkAgeField[file.name];
         if(tgt){
           var lm=file.files[0].lastModified;
