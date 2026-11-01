@@ -28,6 +28,7 @@
   .irk-lbl{display:block;font-size:16px;font-weight:700;margin-bottom:8px}
   .irk-req{color:var(--irk-err);margin-left:3px}
   .irk-sub{display:block;font-size:12px;color:var(--irk-muted);margin-top:6px}
+  .irk-sending{display:none;margin:12px 0 0;font-size:14px;line-height:1.45;color:var(--irk-muted);text-align:center}
   .irk-in{width:100%;height:46px;border:1px solid var(--irk-line);border-radius:6px;padding:0 12px;font:inherit;font-size:16px;color:var(--irk-ink);background:#fff}
   .irk-in:focus{outline:none;border-color:#7a7a7a;box-shadow:0 0 0 3px rgba(24,189,91,.18)}
   .irk-in.num{width:90px}
@@ -468,6 +469,7 @@
 
   <div class="irk-banner" id="irkBanner">Please fill in the highlighted fields before submitting.</div>
   <button type="submit" class="irk-submit" id="irkSubmit">Submit</button>
+  <p class="irk-sending" id="irkSending">Sending your photos. On a weak signal this can take a minute &mdash; please keep this page open.</p>
 </form>
 
 <div class="irk-thanks" id="irkThanks">
@@ -560,6 +562,18 @@
     }catch(e){cb(null);}
   }
 
+  // data: URL -> File, keeping the original's timestamp so the photo-age check
+  // below still measures when the picture was taken, not when it was resized.
+  function irkDataUrlToFile(dataUrl,orig){
+    var parts=String(dataUrl).split(',');
+    if(parts.length<2) return null;
+    var bin=atob(parts[1]);
+    var arr=new Uint8Array(bin.length);
+    for(var i=0;i<bin.length;i++) arr[i]=bin.charCodeAt(i);
+    var base=(orig&&orig.name?orig.name:'photo').replace(/\.[^.]+$/,'');
+    return new File([arr],base+'.jpg',{type:'image/jpeg',lastModified:(orig&&orig.lastModified)||Date.now()});
+  }
+
   /* ---- Photo previews (one per upload field) ---- */
   form.querySelectorAll('input[type=file]').forEach(function(file){
     file.addEventListener('change',function(){
@@ -567,7 +581,25 @@
       if(file.files[0]){
         img.src=URL.createObjectURL(file.files[0]);img.hidden=false;
         file.parentNode.querySelector('.irk-btn2').textContent='Retake Photo';
-        irkScale(file.files[0],1400,0.62,function(d){ if(d) irkPhotos[file.name]={label:irkLabelOf(file),data:d}; });
+        irkScale(file.files[0],1400,0.62,function(d){
+          if(!d) return;
+          irkPhotos[file.name]={label:irkLabelOf(file),data:d};
+          // Upload the scaled copy, not the raw camera file. A phone photo is
+          // several MB and this form sends its photos twice (the CORS fetch
+          // uploads, fails to read the reply, then the iframe fallback uploads
+          // again), so on truck signal the raw files are what leaves the
+          // inspector staring at a spinner. Swapping the input's own file means
+          // BOTH paths send the small one. If anything here is unsupported the
+          // original file is left exactly as it was.
+          try{
+            var small=irkDataUrlToFile(d,file.files[0]);
+            if(small&&small.size<file.files[0].size){
+              var dt=new DataTransfer();
+              dt.items.add(small);
+              file.files=dt.files;
+            }
+          }catch(e){}
+        });
         var tgt=irkAgeField[file.name];
         if(tgt){
           var lm=file.files[0].lastModified;
@@ -846,6 +878,7 @@
     document.getElementById('irkDur').value=irkT0?Math.round((Date.now()-irkT0)/1000):0;
     document.getElementById('irkSigVal').value=cv.toDataURL('image/png');
     var btn=document.getElementById('irkSubmit');btn.disabled=true;btn.textContent='Submitting...';
+    var sending=document.getElementById('irkSending');if(sending)sending.style.display='block';
     banner.style.display='none';
     fetch(form.action,{method:'POST',body:new FormData(form)})
       .then(function(r){
@@ -857,7 +890,7 @@
         irkEmailReport();
         setTimeout(function(){form.style.display='none';document.getElementById('irkThanks').style.display='block';},2500);
       });
-    function fail(msg){banner.textContent=msg;banner.style.display='block';btn.disabled=false;btn.textContent='Submit';}
+    function fail(msg){banner.textContent=msg;banner.style.display='block';btn.disabled=false;btn.textContent='Submit';if(sending)sending.style.display='none';}
   });
 })();
 </script>
