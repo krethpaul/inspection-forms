@@ -56,6 +56,7 @@
   .irk-f.bad .irk-in,.irk-f.bad .irk-sig{border-color:var(--irk-err)}
   .irk-f.bad .irk-err{display:block}
   .irk-banner{display:none;background:#fdecea;color:#8a1f16;border:1px solid #f5c2bd;border-radius:6px;padding:12px 16px;margin:18px 0 0;font-size:14px;text-align:center}
+  .irk-thanks p.irk-mailwarn{display:none;margin:18px auto 22px;max-width:430px;padding:12px 14px;border:1px solid #e8b4ae;background:#fbedec;border-radius:8px;color:#8c2a18;font-weight:600;font-size:14px;line-height:1.5;text-align:left}
   .irk-thanks{display:none;text-align:center;padding:40px 10px}
   .irk-thanks .ck{width:64px;height:64px;border-radius:50%;background:var(--irk-accent);color:#fff;font-size:36px;line-height:64px;margin:0 auto 18px}
   .irk-thanks h3{font-size:22px;margin:0 0 8px}
@@ -476,6 +477,7 @@
   <div class="ck">&#10003;</div>
   <h3>Thank you!</h3>
   <p>Your daily inspection has been submitted.</p>
+  <p class="irk-mailwarn" id="irkMailWarn"></p>
   <button type="button" class="irk-submit" style="margin:0 auto" onclick="location.reload()">Submit another</button>
 </div>
 </div>
@@ -849,10 +851,18 @@
   }
 
   function irkEmailReport(){
+    function irkMailFailed(why){
+      try{
+        var w=document.getElementById('irkMailWarn');
+        if(!w) return;
+        w.textContent='Saved \u2014 but the emailed copy did not send. Your inspection IS recorded, so please do not fill it in again. Tell Paul: '+String(why);
+        w.style.display='block';
+      }catch(e){}
+    }
     try{
       var data=irkCollect();
       var b64=irkBuildPdf(data);
-      if(!b64) return;
+      if(!b64){ irkMailFailed('the PDF could not be built on this device'); return; }
       var when=document.getElementById('irkDateShow').value||'';
       var stamp=when.replace(/[^0-9]/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'');
       fetch('/.netlify/functions/send-report',{
@@ -866,8 +876,15 @@
           flags:data.flags,
           filename:'food-truck-daily-'+stamp
         })
-      }).catch(function(){});
-    }catch(e){}
+      }).then(function(r){
+        if(r&&!r.ok){
+          return r.text().then(function(t){
+            var m=''; try{ m=(JSON.parse(t)||{}).error||''; }catch(e){}
+            irkMailFailed('the mail service returned '+r.status+(m?' ('+m+')':''));
+          }).catch(function(){ irkMailFailed('the mail service returned '+r.status); });
+        }
+      }).catch(function(){ irkMailFailed('this device could not reach the mail service'); });
+    }catch(e){ irkMailFailed('an unexpected error on this device'); }
   }
 
   var banner=document.getElementById('irkBanner');
