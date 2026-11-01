@@ -332,11 +332,65 @@
   }
   stampNow(); setInterval(stampNow,15000); /* live clock so the display is never stale */
 
+  function irkScale(file,maxDim,q,cb){
+    try{
+      var fr=new FileReader();
+      fr.onload=function(){
+        var img=new Image();
+        img.onload=function(){
+          var w=img.width,h=img.height,sc=Math.min(1,maxDim/Math.max(w,h));
+          var c=document.createElement('canvas');
+          c.width=Math.max(1,Math.round(w*sc));c.height=Math.max(1,Math.round(h*sc));
+          c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+          try{cb(c.toDataURL('image/jpeg',q));}catch(e){cb(null);}
+        };
+        img.onerror=function(){cb(null);};
+        img.src=fr.result;
+      };
+      fr.onerror=function(){cb(null);};
+      fr.readAsDataURL(file);
+    }catch(e){cb(null);}
+  }
+
+  // data: URL -> File, keeping the original's timestamp so any photo-age check
+  // still measures when the picture was taken, not when it was resized.
+  function irkDataUrlToFile(dataUrl,orig){
+    var parts=String(dataUrl).split(',');
+    if(parts.length<2) return null;
+    var bin=atob(parts[1]);
+    var arr=new Uint8Array(bin.length);
+    for(var i=0;i<bin.length;i++) arr[i]=bin.charCodeAt(i);
+    var base=(orig&&orig.name?orig.name:'photo').replace(/\.[^.]+$/,'');
+    return new File([arr],base+'.jpg',{type:'image/jpeg',lastModified:(orig&&orig.lastModified)||Date.now()});
+  }
+
+  // Swap the chosen file for a scaled JPEG so the upload carries the small one.
+  // A phone photo is several MB and these pages upload twice (the CORS fetch to
+  // Jotform completes, cannot read the reply, then the iframe fallback uploads
+  // again). If anything here is unsupported the original file is left as it was.
+  function irkShrinkUpload(input){
+    try{
+      var orig=input.files&&input.files[0];
+      if(!orig) return;
+      irkScale(orig,1400,0.62,function(d){
+        if(!d) return;
+        try{
+          var small=irkDataUrlToFile(d,orig);
+          if(small&&small.size<orig.size){
+            var dt=new DataTransfer();
+            dt.items.add(small);
+            input.files=dt.files;
+          }
+        }catch(e){}
+      });
+    }catch(e){}
+  }
+
   /* ---- Photo preview ---- */
   var file=form.querySelector('input[type=file]');
   file.addEventListener('change',function(){
     var img=file.parentNode.querySelector('img');
-    if(file.files[0]){img.src=URL.createObjectURL(file.files[0]);img.hidden=false;file.parentNode.querySelector('.irk-btn2').textContent='Retake Photo';}
+    if(file.files[0]){img.src=URL.createObjectURL(file.files[0]);img.hidden=false;file.parentNode.querySelector('.irk-btn2').textContent='Retake Photo';irkShrinkUpload(file);}
     else{img.hidden=true;}
   });
 
