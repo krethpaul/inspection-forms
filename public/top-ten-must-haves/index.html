@@ -21,6 +21,12 @@
   .ttm-f input{display:block;width:310px;max-width:100%;height:40px;padding:0 10px;font:inherit;color:inherit;background:#fff;border:1px solid #b8bdc9;border-radius:4px;-webkit-appearance:none;appearance:none}
   .ttm-f input:hover{border-color:#2e69ff}
   .ttm-f input:focus{outline:none;border-color:#2e69ff;box-shadow:0 0 0 3px #c9d8fe}
+  .ttm-name{display:flex;gap:12px;max-width:480px}
+  .ttm-name>div{flex:1;min-width:0}
+  .ttm-name input{width:100%}
+  .ttm-sub{display:block;margin-top:6px;font-size:12px;font-weight:400;color:#57647e}
+  .ttm-req{color:#f23a3c;margin-left:3px}
+  .ttm-f input.ttm-bad{border-color:#f23a3c;box-shadow:0 0 0 3px #ffd6d6}
   .ttm-hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;overflow:hidden}
   .ttm-foot{margin:20px -52px 0;padding:24px 52px 28px;border-top:1px solid #d7d8e1;text-align:center}
   .ttm-btn{min-width:180px;height:48px;padding:0 24px;font:inherit;font-weight:500;color:#fff;background:#18bd5b;border:1px solid #18bd5b;border-radius:4px;cursor:pointer}
@@ -37,6 +43,7 @@
   .ttm-sent .ttm-head,.ttm-sent form{display:none}
   .ttm-sent .ttm-done{display:block}
   @media (max-width:600px){
+    .ttm-name{max-width:none}
     .ttm-card{margin:0 0 0;border-radius:0;box-shadow:none;min-height:70vh}
     .ttm-head{padding:28px 20px 22px}
     .ttm-head h1{font-size:24px}
@@ -70,6 +77,13 @@
     <div class="ttm-f"><label for="ttm8">#8</label><input id="ttm8" type="text" name="q10_8" autocomplete="off"></div>
     <div class="ttm-f"><label for="ttm9">#9</label><input id="ttm9" type="text" name="q11_9" autocomplete="off"></div>
     <div class="ttm-f"><label for="ttm10">#10</label><input id="ttm10" type="text" name="q12_10" autocomplete="off"></div>
+    <div class="ttm-f" role="group" aria-labelledby="ttmNameLbl">
+      <label id="ttmNameLbl" for="ttmFirst">Name<span class="ttm-req" aria-hidden="true">*</span></label>
+      <div class="ttm-name">
+        <div><input id="ttmFirst" type="text" name="q13_name[first]" autocomplete="given-name" aria-required="true" aria-describedby="ttmFirstSub"><span class="ttm-sub" id="ttmFirstSub">First Name</span></div>
+        <div><input id="ttmLast" type="text" name="q13_name[last]" autocomplete="family-name" aria-required="true" aria-describedby="ttmLastSub"><span class="ttm-sub" id="ttmLastSub">Last Name</span></div>
+      </div>
+    </div>
     <div class="ttm-foot">
       <div class="ttm-msg" id="ttmMsg" role="alert"></div>
       <button class="ttm-btn" id="ttmBtn" type="submit">Submit</button>
@@ -85,14 +99,17 @@
 (function(){
   var form=document.getElementById('ttmForm'),btn=document.getElementById('ttmBtn'),
       msg=document.getElementById('ttmMsg'),card=document.getElementById('ttmCard'),
-      done=document.getElementById('ttmDone'),busy=false;
+      done=document.getElementById('ttmDone'),busy=false,
+      first=document.getElementById('ttmFirst'),last=document.getElementById('ttmLast');
   function say(t){msg.textContent=t;msg.className='ttm-msg'+(t?' on':'');}
   form.addEventListener('submit',function(e){
     e.preventDefault();
     if(busy)return;
-    var any=false,ins=form.querySelectorAll('.ttm-f input');
-    for(var i=0;i<ins.length;i++){ins[i].value=ins[i].value.trim();if(ins[i].value)any=true;}
+    var any=false,ins=form.querySelectorAll('.ttm-f input'),nm=[first,last],bad=null;
+    for(var i=0;i<ins.length;i++){ins[i].value=ins[i].value.trim();if(ins[i].value&&nm.indexOf(ins[i])<0)any=true;}
     if(!any){say('Please fill in at least one must-have before submitting.');ins[0].focus();return;}
+    for(var j=0;j<nm.length;j++){var ok=!!nm[j].value;nm[j].classList.toggle('ttm-bad',!ok);nm[j].setAttribute('aria-invalid',ok?'false':'true');if(!ok&&!bad)bad=nm[j];}
+    if(bad){say('Please enter your first and last name before submitting.');bad.focus();return;}
     say('');busy=true;btn.disabled=true;btn.textContent='Sending…';
     fetch(form.action,{method:'POST',body:new URLSearchParams(new FormData(form))})
       .then(function(r){
