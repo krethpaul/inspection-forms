@@ -18,3 +18,8 @@
 # does not route through this domain, so nothing below affects it.
 http://kitchenchecklists.com/*    https://forms.inspectionreadykitchens.com/demo/    302!
 https://kitchenchecklists.com/*   https://forms.inspectionreadykitchens.com/demo/    302!
+
+# Top Ten Must-Haves became Top FIVE Must-Haves (Nov 12, 2026) when the Jotform was cut to five boxes.
+# The old address still lands on the form. 302 for the same reason as above.
+/top-ten-must-haves      /top-five-must-haves/    302
+/top-ten-must-haves/*    /top-five-must-haves/    302
